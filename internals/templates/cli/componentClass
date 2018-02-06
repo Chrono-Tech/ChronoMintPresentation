@@ -1,0 +1,20 @@
+/**
+ * ${componentName}
+ */
+
+import React from 'react';
+
+class ${componentName} extends React.PureComponent {
+    render() {
+        return (
+            <div className="${componentName}">
+                ${componentName}
+            </div>
+        );
+    }
+}
+
+${componentName}.defaultProps = {
+};
+
+export default ${componentName};
