@@ -10,6 +10,86 @@
 * - Cursor, z-index, transform, transition, animation
 */
 
+@import "app/scss/partials/mixins";
+
 .PresentationApp {
-  background: red;
+  @include position(absolute);
+  background: linear-gradient(to bottom,#574EBF ,#353266 100%);
+
+  >header {
+    @include position(fixed, 0, 0, auto, 0);
+    border-bottom: 1px solid #494896;
+    background: rgba(#353266, 0.97);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+    >ul {
+      margin: 0;
+      padding: 15px 40px;
+      list-style: none;
+      display: flex;
+      position: relative;
+      >li {
+        flex: 0 0 auto;
+        >a.button {
+          @include button-rounded();
+        }
+        >a.logo {
+          display: block;
+          >img {
+            width: 192px;
+          }
+        }
+      }
+    }
+  }
+
+  >section {
+    @include position(absolute, 70px, 0, 0, 0);
+    >:global(.swiper-container) {
+      @include swiper-container();
+      >:global(.swiper-wrapper) {
+        @include swiper-wrapper();
+        >:global(.swiper-slide) {
+          @include swiper-slide();
+          align-items: flex-start;
+          position: relative;
+          >img.slide-bg {
+            width: 100%;
+            height: auto;
+          }
+          >.cells {
+            @include position(absolute);
+            display: flex;
+            align-items: stretch;
+            >.cell {
+              flex: 1 1 50%;
+              position: relative;
+              margin: 6% 0%;
+              &.cell-1 {
+                margin-left: 5%;
+              }
+              &.cell-2 {
+                margin-right: 5%;
+                >img.slide-fg {
+                  margin: 0 14% 0 -4%;
+                  height: auto;
+                }
+              }
+            }
+          }
+        }
+      }
+      >:global(.swiper-pagination) {
+        @include swiper-pagination();
+        bottom: 0px;
+        padding: 36px 36px;
+        text-align: right;
+        >:global(.swiper-pagination-bullet) {
+          @include swiper-pagination-bullet();
+        }
+      }
+    }
+  }
 }

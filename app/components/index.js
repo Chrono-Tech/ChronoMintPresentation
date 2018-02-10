@@ -1,5 +1,5 @@
-import PresentationApp from './PresentationApp';
+import PresentationApp from './PresentationApp'
 
 export {
-    PresentationApp,
-};
+  PresentationApp,
+}
