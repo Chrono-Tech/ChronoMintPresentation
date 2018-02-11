@@ -11,9 +11,11 @@
 */
 
 @import "app/scss/partials/mixins";
+@import "app/scss/themes/fonts";
 
 .PresentationApp {
   @include position(absolute);
+  font-family: $proxima;
   background: linear-gradient(to bottom,#574EBF ,#353266 100%);
 
   >header {
@@ -53,6 +55,7 @@
         @include swiper-wrapper();
         >:global(.swiper-slide) {
           @include swiper-slide();
+          overflow: auto;
           align-items: flex-start;
           position: relative;
           >img.slide-bg {
@@ -83,6 +86,7 @@
                     color: #FFFFFF;
                     line-height: 1.4;
                     margin-bottom: 36px;
+                    font-size: 1.4vw;
                     i {
                       color: rgba(#E2A864,1);
                       text-decoration: none;
@@ -122,8 +126,9 @@
       }
       >:global(.swiper-pagination) {
         @include swiper-pagination();
+        pointer-events: none;
         bottom: 0px;
-        padding: 36px 36px;
+        padding: 4vh 4vw;
         text-align: right;
         >:global(.swiper-pagination-bullet) {
           @include swiper-pagination-bullet();

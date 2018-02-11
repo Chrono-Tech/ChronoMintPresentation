@@ -47,7 +47,7 @@ class PresentationApp extends React.PureComponent {
                   <div styleName='cells'>
                     <div styleName='cell cell-1' />
                     <div styleName='cell cell-2'>
-                      <img styleName='slide-fg' src={slide.fg} alt={`Slide ${index + 1}`} />
+                      <img styleName='slide-fg' style={{ margin: slide.fgMargin }} src={slide.fg} alt={`Slide ${index + 1}`} />
                       <div styleName='details' style={{ margin: slide.detailsMargin }}>
                         <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
                         <button styleName='button button-next' className='swiper-button-next'>Next</button>
