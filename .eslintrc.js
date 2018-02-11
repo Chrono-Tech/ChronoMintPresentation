@@ -5,6 +5,7 @@ module.exports = {
     'space-before-function-paren': ['error', 'always'],
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': 'off', // TODO Use webpack resolver possible to solve issues with aliased modules
-    'react/jsx-no-bind': 'off'
+    'react/jsx-no-bind': 'off',
+    'react/no-danger': 'off'
   }
 };

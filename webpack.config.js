@@ -149,6 +149,10 @@ module.exports = [{
             {
                 from: 'favicons/**',
                 to: path.posix.join(outputPath, config.outputPathSubFolder)
+            },
+            {
+                from: 'ext/**',
+                to: path.posix.join(outputPath, config.outputPathSubFolder)
             }
         ]),
     ],

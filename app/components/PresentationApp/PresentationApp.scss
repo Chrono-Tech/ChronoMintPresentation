@@ -63,6 +63,7 @@
             @include position(absolute);
             display: flex;
             align-items: stretch;
+            text-align: left;
             >.cell {
               flex: 1 1 50%;
               position: relative;
@@ -75,6 +76,44 @@
                 >img.slide-fg {
                   margin: 0 14% 0 -4%;
                   height: auto;
+                }
+                >.details {
+                  margin: 32px 7% 32px 32%;
+                  >.message {
+                    color: #FFFFFF;
+                    line-height: 1.4;
+                    margin-bottom: 36px;
+                    i {
+                      color: rgba(#E2A864,1);
+                      text-decoration: none;
+                      font-weight: bold;
+                      font-style: normal;
+                    }
+
+                    a {
+                      color: rgba(#5db3ed,0.9);
+                      text-decoration: none;
+                      font-weight: bold;
+                      &:hover {
+                        text-decoration: underline;
+                        color: rgba(#5db3ed,1);
+                      }
+                    }
+                  }
+                  >button.button {
+                    @include button-rounded();
+                    &.button-next {
+                      background: rgba(#E2A864,0.9);
+                      line-height: 48px;
+                      min-width: 160px;
+                      &:hover {
+                        background: rgba(#E2A864,1);
+                      }
+                    }
+                    &.button-signin {
+
+                    }
+                  }
                 }
               }
             }

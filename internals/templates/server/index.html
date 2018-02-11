@@ -9,32 +9,14 @@
 
   <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/vendor.js"></script>
   <script src="${path.posix.join(publicPath, config.outputPathJsFolder)}/index.js"></script>
+  <!-- <script async src="${path.posix.join(publicPath, config.outputPathExtFolder)}/chronomint/main.js"></script> -->
   <link rel="stylesheet" href="/devserver.css">
   <link rel="stylesheet" href="${path.posix.join(publicPath, config.outputPathCssFolder)}/index.css">
 </head>
-<body onload="document.documentElement.classList.remove('no-js');">
-  <div class="devserver">
-    <form class='devserver__themeform'>
-      <a href='/' class='devserver__backlink'>Back to listing</a>
-
-      <select
-        class='devserver__themeselect'
-        name='componentName'
-        onChange='this.form.submit();'
-        >
-        <option disabled>Välj komponent</option>
-        ${
-          components.map((comp) => {
-            let selected = componentName === comp ? "selected" : "";
-            return "<option "+selected+">" + comp + "</option>";
-          })
-        }
-      </select>
-    </form>
-  </div>
+<body>
   <!-- content -->
   <!-- react-render -->
-
+  <div id="react-root"></div>
   <script src="/devserver.js"></script>
 </body>
 </html>

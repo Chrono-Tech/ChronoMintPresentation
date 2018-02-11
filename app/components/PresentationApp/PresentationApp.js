@@ -4,6 +4,7 @@
 
 import React from 'react'
 import Swiper from 'swiper'
+import componentData from './PresentationApp.json'
 import './PresentationApp.scss'
 
 class PresentationApp extends React.PureComponent {
@@ -12,6 +13,10 @@ class PresentationApp extends React.PureComponent {
     this.swiper = new Swiper(this.swiperContainer, {
       pagination: {
         el: this.swiperPagination,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
       },
     })
   }
@@ -36,24 +41,21 @@ class PresentationApp extends React.PureComponent {
         <section>
           <div className='swiper-container' ref={(el) => { this.swiperContainer = el }}>
             <div className='swiper-wrapper'>
-              <div className='swiper-slide'>
-                <img styleName='slide-bg' src='/static/img/slides/slide-01-bg.jpg' alt='Slide 01' />
-                <div styleName='cells'>
-                  <div styleName='cell cell-1' />
-                  <div styleName='cell cell-2'>
-                    <img styleName='slide-fg' src='/static/img/slides/slide-01-fg.svg' alt='Slide 01' />
+              {componentData.slides.map((slide, index)  => (
+                <div className='swiper-slide' key={slide.name}>
+                  <img styleName='slide-bg' src={slide.bg} alt={`Slide ${index + 1}`} />
+                  <div styleName='cells'>
+                    <div styleName='cell cell-1' />
+                    <div styleName='cell cell-2'>
+                      <img styleName='slide-fg' src={slide.fg} alt={`Slide ${index + 1}`} />
+                      <div styleName='details' style={{ margin: slide.detailsMargin }}>
+                        <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
+                        <button styleName='button button-next' className='swiper-button-next'>Next</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='swiper-slide'>
-                <img styleName='slide-bg' src='/static/img/slides/slide-02-bg.jpg' alt='Slide 02' />
-                <div styleName='cells'>
-                  <div styleName='cell cell-1' />
-                  <div styleName='cell cell-2'>
-                    <img styleName='slide-fg' src='/static/img/slides/slide-02-fg.svg' alt='Slide 02' />
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
             <div className='swiper-pagination' ref={(el) => { this.swiperPagination = el }} />
           </div>

@@ -4,12 +4,13 @@
     "outputPath": "dist",
     "outputPathSubFolder": "static",
     "outputPathJsFolder": "js",
+    "outputPathExtFolder": "ext",
     "outputPathCssFolder": "css",
     "outputPathHtmlFolder": "dist/html", // from process.cwd(), ie root folder of frontend
     "webpackConfig": "./webpack.config.js",
     "appFolder": "app",
     "componentsFolder": "components",
-    "containerId": "root",
+    "containerId": "presenation-react-root",
     "useServerRendering": false,
     "useServerRenderingOnPublish": true,
 

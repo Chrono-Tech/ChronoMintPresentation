@@ -2,6 +2,8 @@
 
 @mixin button-rounded () {
   display: block;
+  border: none;
+  cursor: pointer;
   border-radius: 999px;
   min-width: 120px;
   line-height: 40px;
