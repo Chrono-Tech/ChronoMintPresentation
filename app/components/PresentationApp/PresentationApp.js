@@ -3,11 +3,20 @@
  */
 
 import React from 'react'
+// import ReactDOM from 'react-dom'
+import classnames from 'classnames'
 import Swiper from 'swiper'
 import componentData from './PresentationApp.json'
 import './PresentationApp.scss'
 
 class PresentationApp extends React.PureComponent {
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      open: true,
+    }
+  }
 
   componentDidMount () {
     this.swiper = new Swiper(this.swiperContainer, {
@@ -21,20 +30,36 @@ class PresentationApp extends React.PureComponent {
     })
   }
 
+  handleSignin () {
+    this.setState({
+      open: false,
+    })
+    setTimeout(() => {
+      // eslint-disable-next-line
+      ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(this).parentNode)
+    }, 500)
+  }
+
   render () {
     return (
-      <div styleName='PresentationApp'>
+      <div styleName={
+        classnames({
+          'PresentationApp': true,
+          'PresentationApp-closed': !this.state.open,
+        })
+      }
+      >
         <header>
           <ul>
             <li>
-              <a styleName='logo' href='/'>
+              <button styleName='logo' onClick={() => this.handleSignin()}>
                 <img src='/static/img/logo-chronobank.svg' alt='ChronoBank Logo' />
-              </a>
+              </button>
             </li>
           </ul>
           <ul>
             <li>
-              <a styleName='button' href='/'>Sign In</a>
+              <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
             </li>
           </ul>
         </header>
@@ -50,7 +75,11 @@ class PresentationApp extends React.PureComponent {
                       <img styleName='slide-fg' style={{ margin: slide.fgMargin }} src={slide.fg} alt={`Slide ${index + 1}`} />
                       <div styleName='details' style={{ margin: slide.detailsMargin }}>
                         <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
-                        <button styleName='button button-next' className='swiper-button-next'>Next</button>
+                        {index === componentData.slides.length - 1
+                          ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
+                          : <button styleName='button button-next' className='swiper-button-next'>Next</button>
+                        }
+
                       </div>
                     </div>
                   </div>

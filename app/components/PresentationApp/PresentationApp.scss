@@ -17,6 +17,11 @@
   @include position(absolute);
   font-family: $proxima;
   background: linear-gradient(to bottom,#574EBF ,#353266 100%);
+  transition: opacity 0.5s ease-out;
+
+  &.PresentationApp-closed {
+    opacity: 0;
+  }
 
   >header {
     @include position(fixed, 0, 0, auto, 0);
@@ -34,11 +39,15 @@
       position: relative;
       >li {
         flex: 0 0 auto;
-        >a.button {
+        >button.button {
           @include button-rounded();
         }
-        >a.logo {
+        >button.logo {
           display: block;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          outline: none;
           >img {
             width: 192px;
           }
@@ -48,14 +57,15 @@
   }
 
   >section {
-    @include position(absolute, 70px, 0, 0, 0);
+    // @include position(absolute, 70px, 0, 0, 0);
+    margin-top: 70px;
     >:global(.swiper-container) {
       @include swiper-container();
       >:global(.swiper-wrapper) {
         @include swiper-wrapper();
         >:global(.swiper-slide) {
           @include swiper-slide();
-          overflow: auto;
+          // overflow: auto;
           align-items: flex-start;
           position: relative;
           >img.slide-bg {
@@ -106,16 +116,15 @@
                   }
                   >button.button {
                     @include button-rounded();
+                    line-height: 48px;
+                    min-width: 160px;
                     &.button-next {
                       background: rgba(#E2A864,0.9);
-                      line-height: 48px;
-                      min-width: 160px;
                       &:hover {
                         background: rgba(#E2A864,1);
                       }
                     }
                     &.button-signin {
-
                     }
                   }
                 }
@@ -126,6 +135,7 @@
       }
       >:global(.swiper-pagination) {
         @include swiper-pagination();
+        @include position(fixed, auto, 0, 0, 0);
         pointer-events: none;
         bottom: 0px;
         padding: 4vh 4vw;
