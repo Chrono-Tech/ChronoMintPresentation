@@ -13,10 +13,13 @@
 @import "app/scss/partials/mixins";
 @import "app/scss/themes/fonts";
 
+:root {
+  background: linear-gradient(to bottom,#574EBF ,#353266 100%);
+}
+
 .PresentationApp {
   @include position(absolute);
   font-family: $proxima;
-  background: linear-gradient(to bottom,#574EBF ,#353266 100%);
   transition: opacity 0.5s ease-out;
 
   &.PresentationApp-closed {
