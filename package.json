@@ -1,7 +1,7 @@
 {
-  "name": "react-sass-starterkit",
-  "version": "2.4.0",
-  "description": "Frontend setup for react with sass and webpack",
+  "name": "@chronobank/chronomint-presentation",
+  "version": "0.1.0",
+  "description": "ChronoMint Presentation",
   "private": true,
   "scripts": {
     "build": "webpack",
@@ -23,21 +23,7 @@
     "watch": "webpack --watch",
     "hs": "hs dist -a localhost -o"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com:frojd/react-sass-starterkit.git"
-  },
-  "keywords": [
-    "webpack",
-    "sass",
-    "react",
-    "frontend",
-    "boilerplate",
-    "starterkit",
-    "cli",
-    "staticgenerator"
-  ],
-  "author": "Daniel Karlsson",
+  "author": "Igor Pavlenko",
   "license": "MIT",
   "browserslist": [
     "last 2 versions"

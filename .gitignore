@@ -1,5 +1,4 @@
 # Ignore dist folder
-/dist
 /raw
 
 # Ignore build errors and node_modules
