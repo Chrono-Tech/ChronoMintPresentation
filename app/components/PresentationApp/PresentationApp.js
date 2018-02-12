@@ -53,7 +53,7 @@ class PresentationApp extends React.PureComponent {
           <ul>
             <li>
               <button styleName='logo' onClick={() => this.handleSignin()}>
-                <img src='/static/img/logo-chronobank.svg' alt='ChronoBank Logo' />
+                <img src='/chronomint-presentation/img/logo-chronobank.svg' alt='ChronoBank Logo' />
               </button>
             </li>
           </ul>

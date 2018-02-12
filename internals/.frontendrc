@@ -2,7 +2,7 @@
 {
     // General
     "outputPath": "dist",
-    "outputPathSubFolder": "static",
+    "outputPathSubFolder": "chronomint-presentation",
     "outputPathJsFolder": "js",
     "outputPathExtFolder": "ext",
     "outputPathCssFolder": "css",
@@ -18,7 +18,7 @@
     "port": 7000,
     "rootServerTemplatePath": "/internals/templates/server/",
     "publicPathPrefix": "/",
-    "publicPath": "/static/",
+    "publicPath": "/chronomint-presentation/",
 
     // Cli
     "rootCliTemplatePath": "/internals/templates/cli/",
