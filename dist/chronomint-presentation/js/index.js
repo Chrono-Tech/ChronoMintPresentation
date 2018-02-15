@@ -284,7 +284,9 @@ var _styleModuleImportMap = {
     'foreground-mobile': 'PresentationApp__foreground-mobile___2eHva',
     'details': 'PresentationApp__details___1EbPS',
     'message': 'PresentationApp__message___3-JjC',
+    'buttons': 'PresentationApp__buttons___1RIuj',
     'button-next': 'PresentationApp__button-next___2Th7q',
+    'button-prev': 'PresentationApp__button-prev___3RPRp',
     'button-signin': 'PresentationApp__button-signin___2-Gys',
     'details-desktop': 'PresentationApp__details-desktop___1GKAu',
     'details-mobile': 'PresentationApp__details-mobile___lN-18'
@@ -438,32 +440,45 @@ var PresentationApp = function (_React$PureComponent) {
                         'div',
                         { className: 'PresentationApp__details___1EbPS PresentationApp__details-desktop___1GKAu', style: { margin: slide.detailsMargin } },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__message___3-JjC', dangerouslySetInnerHTML: { __html: slide.promo } }),
-                        index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                          'button',
-                          { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
-                              return _this3.handleSignin();
-                            } },
-                          'Sign In'
-                        ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                          'button',
-                          { className: 'swiper-button-next PresentationApp__button___1Fa0W PresentationApp__button-next___2Th7q' },
-                          'Next'
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                          'div',
+                          { className: 'PresentationApp__buttons___1RIuj' },
+                          index === 0 ? null : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'button',
+                            { className: 'swiper-button-prev PresentationApp__button___1Fa0W PresentationApp__button-prev___3RPRp' },
+                            'Prev'
+                          ),
+                          index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'button',
+                            { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
+                                return _this3.handleSignin();
+                              } },
+                            'Sign In'
+                          ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'button',
+                            { className: 'swiper-button-next PresentationApp__button___1Fa0W PresentationApp__button-next___2Th7q' },
+                            'Next'
+                          )
                         )
                       ),
                       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'PresentationApp__details___1EbPS PresentationApp__details-mobile___lN-18' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__message___3-JjC', dangerouslySetInnerHTML: { __html: slide.promo } }),
-                        index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                          'button',
-                          { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
-                              return _this3.handleSignin();
-                            } },
-                          'Sign In'
-                        ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                          'button',
-                          { className: 'swiper-button-next PresentationApp__button___1Fa0W PresentationApp__button-next___2Th7q' },
-                          'Next'
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                          'div',
+                          { className: 'PresentationApp__buttons___1RIuj' },
+                          index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'button',
+                            { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
+                                return _this3.handleSignin();
+                              } },
+                            'Sign In'
+                          ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'button',
+                            { className: 'swiper-button-next PresentationApp__button___1Fa0W PresentationApp__button-next___2Th7q' },
+                            'Next'
+                          )
                         )
                       )
                     )
@@ -8633,7 +8648,7 @@ module.exports = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"PresentationApp":"PresentationApp__PresentationApp___2SSdq","PresentationApp-closed":"PresentationApp__PresentationApp-closed___1F7uG","button":"PresentationApp__button___1Fa0W","logo":"PresentationApp__logo___UNfQL","logo-desktop":"PresentationApp__logo-desktop___3b7pB","logo-mobile":"PresentationApp__logo-mobile___3n0CN","background":"PresentationApp__background___1ULQz","background-desktop":"PresentationApp__background-desktop___GaDlq","background-mobile":"PresentationApp__background-mobile___1IFf9","cells":"PresentationApp__cells___2LH2K","cell":"PresentationApp__cell___yILof","cell-desktop":"PresentationApp__cell-desktop___cso4O","cell-mobile":"PresentationApp__cell-mobile___3bcpy","cell-1":"PresentationApp__cell-1___2OQDG","cell-2":"PresentationApp__cell-2___1jb-r","foreground":"PresentationApp__foreground___33lbg","foreground-desktop":"PresentationApp__foreground-desktop___1up1J","foreground-mobile":"PresentationApp__foreground-mobile___2eHva","details":"PresentationApp__details___1EbPS","message":"PresentationApp__message___3-JjC","button-next":"PresentationApp__button-next___2Th7q","details-desktop":"PresentationApp__details-desktop___1GKAu","details-mobile":"PresentationApp__details-mobile___lN-18"};
+module.exports = {"PresentationApp":"PresentationApp__PresentationApp___2SSdq","PresentationApp-closed":"PresentationApp__PresentationApp-closed___1F7uG","button":"PresentationApp__button___1Fa0W","logo":"PresentationApp__logo___UNfQL","logo-desktop":"PresentationApp__logo-desktop___3b7pB","logo-mobile":"PresentationApp__logo-mobile___3n0CN","background":"PresentationApp__background___1ULQz","background-desktop":"PresentationApp__background-desktop___GaDlq","background-mobile":"PresentationApp__background-mobile___1IFf9","cells":"PresentationApp__cells___2LH2K","cell":"PresentationApp__cell___yILof","cell-desktop":"PresentationApp__cell-desktop___cso4O","cell-mobile":"PresentationApp__cell-mobile___3bcpy","cell-1":"PresentationApp__cell-1___2OQDG","cell-2":"PresentationApp__cell-2___1jb-r","foreground":"PresentationApp__foreground___33lbg","foreground-desktop":"PresentationApp__foreground-desktop___1up1J","foreground-mobile":"PresentationApp__foreground-mobile___2eHva","details":"PresentationApp__details___1EbPS","message":"PresentationApp__message___3-JjC","buttons":"PresentationApp__buttons___1RIuj","button-next":"PresentationApp__button-next___2Th7q","button-prev":"PresentationApp__button-prev___3RPRp","details-desktop":"PresentationApp__details-desktop___1GKAu","details-mobile":"PresentationApp__details-mobile___lN-18"};
 
 /***/ })
 /******/ ]);

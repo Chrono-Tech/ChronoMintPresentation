@@ -86,17 +86,25 @@ class PresentationApp extends React.PureComponent {
                       <img styleName='foreground foreground-mobile' src={slide.fg} alt={`Slide ${index + 1}`} />
                       <div styleName='details details-desktop' style={{ margin: slide.detailsMargin }}>
                         <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
-                        {index === componentData.slides.length - 1
-                          ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
-                          : <button styleName='button button-next' className='swiper-button-next'>Next</button>
-                        }
+                        <div styleName='buttons'>
+                          {index === 0
+                            ? null
+                            : <button styleName='button button-prev' className='swiper-button-prev'>Prev</button>
+                          }
+                          {index === componentData.slides.length - 1
+                            ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
+                            : <button styleName='button button-next' className='swiper-button-next'>Next</button>
+                          }
+                        </div>
                       </div>
                       <div styleName='details details-mobile'>
                         <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
-                        {index === componentData.slides.length - 1
-                          ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
-                          : <button styleName='button button-next' className='swiper-button-next'>Next</button>
-                        }
+                        <div styleName='buttons'>
+                          {index === componentData.slides.length - 1
+                            ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
+                            : <button styleName='button button-next' className='swiper-button-next'>Next</button>
+                          }
+                        </div>
                       </div>
                     </div>
                   </div>
