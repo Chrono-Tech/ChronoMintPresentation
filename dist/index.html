@@ -14,9 +14,11 @@
 </head>
 <body>
   <div id="presentation-root"><!-- content --></div>
-  <div id="react-root"></div>
+  <div id="react-root">Application Container</div>
   <script>
-    ReactDOM.render(React.createElement(Components.PresentationApp, {}), document.getElementById("presentation-root"));
+    ReactDOM.render(React.createElement(Components.PresentationApp, {
+      applicationContainer: document.getElementById("react-root")
+    }), document.getElementById("presentation-root"));
   </script>
 </body>
 </html>

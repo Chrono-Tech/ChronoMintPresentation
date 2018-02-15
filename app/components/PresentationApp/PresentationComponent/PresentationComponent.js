@@ -18,6 +18,7 @@ class PresentationComponent extends React.PureComponent {
 
   static propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
+    onClose: PropTypes.func,
   }
 
   componentWillMount () {
@@ -51,10 +52,9 @@ class PresentationComponent extends React.PureComponent {
     this.setState({
       open: false,
     })
-    setTimeout(() => {
-      // eslint-disable-next-line
-      ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(this).parentNode)
-    }, 500)
+    if (this.props.onClose) {
+      this.props.onClose()
+    }
   }
 
   render () {
