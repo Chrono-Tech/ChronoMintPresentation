@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { CookiesProvider } from 'react-cookie'
 import PresentationComponent from './PresentationComponent'
+import './PresentationApp.scss'
 
 class PresentationApp extends React.PureComponent {
 
