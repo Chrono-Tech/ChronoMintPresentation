@@ -52,8 +52,11 @@ class PresentationApp extends React.PureComponent {
         <header>
           <ul>
             <li>
-              <button styleName='logo' onClick={() => this.handleSignin()}>
+              <button styleName='logo logo-desktop' onClick={() => this.handleSignin()}>
                 <img src='/chronomint-presentation/img/logo-chronobank.svg' alt='ChronoBank Logo' />
+              </button>
+              <button styleName='logo logo-mobile' onClick={() => this.handleSignin()}>
+                <img src='/chronomint-presentation/img/logo-chronobank-mobile.svg' alt='ChronoBank Logo' />
               </button>
             </li>
           </ul>
@@ -69,6 +72,7 @@ class PresentationApp extends React.PureComponent {
               {componentData.slides.map((slide, index)  => (
                 <div className='swiper-slide' key={slide.name}>
                   <img styleName='slide-bg' src={slide.bg} alt={`Slide ${index + 1}`} />
+                  <img styleName='slide-bg-mobile' src={slide.bgMobile} alt={`Slide ${index + 1}`} />
                   <div styleName='cells'>
                     <div styleName='cell cell-1' />
                     <div styleName='cell cell-2'>
