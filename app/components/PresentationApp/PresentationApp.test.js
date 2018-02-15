@@ -1,23 +1,23 @@
 /**
- * Tests for PresentationApp
+ * Tests for PresentationComponent
  */
 
 import React from 'react'
 import { expect } from 'chai'
 import { mount } from 'enzyme'
-import PresentationApp from './'
-import { getData } from '../../../internals/utils'
+import PresentationComponent from './'
+import { getData } from '../../../../internals/utils'
 
-let data = getData('PresentationApp')
+let data = getData('PresentationComponent')
 
-describe('<PresentationApp />', () => {
-  it('Renders an empty PresentationApp', () => {
-    const wrapper = mount(<PresentationApp />)
-    expect(wrapper.find(PresentationApp)).to.have.length(1)
+describe('<PresentationComponent />', () => {
+  it('Renders an empty PresentationComponent', () => {
+    const wrapper = mount(<PresentationComponent />)
+    expect(wrapper.find(PresentationComponent)).to.have.length(1)
   })
 
-  it('Renders PresentationApp with data', () => {
-    const wrapper = mount(<PresentationApp {...data} />)
-    expect(wrapper.find(PresentationApp)).to.have.length(1)
+  it('Renders PresentationComponent with data', () => {
+    const wrapper = mount(<PresentationComponent {...data} />)
+    expect(wrapper.find(PresentationComponent)).to.have.length(1)
   })
 })

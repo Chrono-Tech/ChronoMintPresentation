@@ -60,11 +60,589 @@
 /******/ 	__webpack_require__.p = "/chronomint-presentation/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = React;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Cookies = __webpack_require__(20);
+
+var _Cookies2 = _interopRequireDefault(_Cookies);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _Cookies2.default;
+module.exports = exports['default'];
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (process.env.NODE_ENV !== 'production') {
+  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+    Symbol.for &&
+    Symbol.for('react.element')) ||
+    0xeac7;
+
+  var isValidElement = function(object) {
+    return typeof object === 'object' &&
+      object !== null &&
+      object.$$typeof === REACT_ELEMENT_TYPE;
+  };
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = __webpack_require__(24)(isValidElement, throwOnDirectAccess);
+} else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(26)();
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function makeEmptyFunction(arg) {
+  return function () {
+    return arg;
+  };
+}
+
+/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+var emptyFunction = function emptyFunction() {};
+
+emptyFunction.thatReturns = makeEmptyFunction;
+emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+emptyFunction.thatReturnsThis = function () {
+  return this;
+};
+emptyFunction.thatReturnsArgument = function (arg) {
+  return arg;
+};
+
+module.exports = emptyFunction;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Cookies = __webpack_require__(19);
+
+Object.defineProperty(exports, 'Cookies', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Cookies).default;
+  }
+});
+
+var _CookiesProvider = __webpack_require__(23);
+
+Object.defineProperty(exports, 'CookiesProvider', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_CookiesProvider).default;
+  }
+});
+
+var _withCookies = __webpack_require__(27);
+
+Object.defineProperty(exports, 'withCookies', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_withCookies).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyFunction = __webpack_require__(4);
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = emptyFunction;
+
+if (process.env.NODE_ENV !== 'production') {
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -163,29 +741,29 @@ var win = w;
 
 
 /***/ }),
-/* 1 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(2);
+module.exports = __webpack_require__(12);
 
 
 /***/ }),
-/* 2 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*eslint-disable*/
-__webpack_require__(3);
+__webpack_require__(13);
 /*eslint-enable*/
 
 /***/ }),
-/* 3 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(5);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Components"] = __webpack_require__(15);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 4 */
+/* 14 */
 /***/ (function(module, exports) {
 
 var g;
@@ -212,84 +790,1417 @@ module.exports = g;
 
 
 /***/ }),
-/* 5 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PresentationApp__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PresentationApp__ = __webpack_require__(16);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "PresentationApp", function() { return __WEBPACK_IMPORTED_MODULE_0__PresentationApp__["a"]; });
 
 
 
 
 /***/ }),
-/* 6 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_swiper_dist_css_swiper_min_css__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_swiper_dist_css_swiper_min_css__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_swiper_dist_css_swiper_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_swiper_dist_css_swiper_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PresentationApp__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PresentationApp__ = __webpack_require__(18);
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_1__PresentationApp__["a" /* default */]);
 
 /***/ }),
-/* 7 */
+/* 17 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"swiper-container":"swiper-min__swiper-container___22ujI","swiper-container-no-flexbox":"swiper-min__swiper-container-no-flexbox___3W0C-","swiper-slide":"swiper-min__swiper-slide___1zL78","swiper-container-vertical":"swiper-min__swiper-container-vertical___aWApa","swiper-wrapper":"swiper-min__swiper-wrapper___1glXd","swiper-container-android":"swiper-min__swiper-container-android___336rK","swiper-container-multirow":"swiper-min__swiper-container-multirow___1GoFm","swiper-container-free-mode":"swiper-min__swiper-container-free-mode___1r2Qi","swiper-invisible-blank-slide":"swiper-min__swiper-invisible-blank-slide___zkOfK","swiper-container-autoheight":"swiper-min__swiper-container-autoheight___14QKN","swiper-container-3d":"swiper-min__swiper-container-3d___1xrAR","swiper-cube-shadow":"swiper-min__swiper-cube-shadow___3yNcJ","swiper-slide-shadow-bottom":"swiper-min__swiper-slide-shadow-bottom___1IOF6","swiper-slide-shadow-left":"swiper-min__swiper-slide-shadow-left___1KlIM","swiper-slide-shadow-right":"swiper-min__swiper-slide-shadow-right___1rKb7","swiper-slide-shadow-top":"swiper-min__swiper-slide-shadow-top___2S7hy","swiper-container-wp8-horizontal":"swiper-min__swiper-container-wp8-horizontal___23LGs","swiper-container-wp8-vertical":"swiper-min__swiper-container-wp8-vertical___1PYme","swiper-button-next":"swiper-min__swiper-button-next___2vk5G","swiper-button-prev":"swiper-min__swiper-button-prev___1kvj-","swiper-button-disabled":"swiper-min__swiper-button-disabled___3HMt7","swiper-container-rtl":"swiper-min__swiper-container-rtl___5bxcv","swiper-button-white":"swiper-min__swiper-button-white___1l7yt","swiper-button-black":"swiper-min__swiper-button-black___242P9","swiper-button-lock":"swiper-min__swiper-button-lock___2FRU-","swiper-pagination":"swiper-min__swiper-pagination___njVlo","swiper-pagination-hidden":"swiper-min__swiper-pagination-hidden___1r7SI","swiper-container-horizontal":"swiper-min__swiper-container-horizontal___yCw0-","swiper-pagination-bullets":"swiper-min__swiper-pagination-bullets___2xyo6","swiper-pagination-custom":"swiper-min__swiper-pagination-custom___3rQlx","swiper-pagination-fraction":"swiper-min__swiper-pagination-fraction___eD-So","swiper-pagination-bullets-dynamic":"swiper-min__swiper-pagination-bullets-dynamic___3Y2Da","swiper-pagination-bullet":"swiper-min__swiper-pagination-bullet___1halO","swiper-pagination-bullet-active":"swiper-min__swiper-pagination-bullet-active___wVBt8","swiper-pagination-bullet-active-main":"swiper-min__swiper-pagination-bullet-active-main___3eOvv","swiper-pagination-bullet-active-prev":"swiper-min__swiper-pagination-bullet-active-prev___3EzfV","swiper-pagination-bullet-active-prev-prev":"swiper-min__swiper-pagination-bullet-active-prev-prev___1guIm","swiper-pagination-bullet-active-next":"swiper-min__swiper-pagination-bullet-active-next___Ax9Dy","swiper-pagination-bullet-active-next-next":"swiper-min__swiper-pagination-bullet-active-next-next___YpIvi","swiper-pagination-clickable":"swiper-min__swiper-pagination-clickable___2Oz72","swiper-pagination-progressbar":"swiper-min__swiper-pagination-progressbar___1i2bh","swiper-pagination-progressbar-fill":"swiper-min__swiper-pagination-progressbar-fill___hKfun","swiper-pagination-white":"swiper-min__swiper-pagination-white___1Abg8","swiper-pagination-black":"swiper-min__swiper-pagination-black___2niCV","swiper-pagination-lock":"swiper-min__swiper-pagination-lock___KZ9QS","swiper-scrollbar":"swiper-min__swiper-scrollbar___EktEU","swiper-scrollbar-drag":"swiper-min__swiper-scrollbar-drag___3SKBL","swiper-scrollbar-cursor-drag":"swiper-min__swiper-scrollbar-cursor-drag___2FeX2","swiper-scrollbar-lock":"swiper-min__swiper-scrollbar-lock___1XMbx","swiper-zoom-container":"swiper-min__swiper-zoom-container___24na-","swiper-slide-zoomed":"swiper-min__swiper-slide-zoomed___3Lwmj","swiper-lazy-preloader":"swiper-min__swiper-lazy-preloader___3e17y","swiper-preloader-spin":"swiper-min__swiper-preloader-spin___3qrpj","swiper-lazy-preloader-white":"swiper-min__swiper-lazy-preloader-white___3U92q","swiper-notification":"swiper-min__swiper-notification___1YcWZ","swiper-container-fade":"swiper-min__swiper-container-fade___htE2-","swiper-slide-active":"swiper-min__swiper-slide-active___3z9ei","swiper-container-cube":"swiper-min__swiper-container-cube___sXUlL","swiper-slide-next":"swiper-min__swiper-slide-next___diUjX","swiper-slide-prev":"swiper-min__swiper-slide-prev___11n_5","swiper-container-flip":"swiper-min__swiper-container-flip___2Jjcp","swiper-container-coverflow":"swiper-min__swiper-container-coverflow___2uKy_"};
 
 /***/ }),
-/* 8 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_plugin_react_css_modules_dist_browser_getClassName__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_cookie__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_cookie___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_cookie__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PresentationComponent__ = __webpack_require__(29);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var PresentationApp = function (_React$PureComponent) {
+  _inherits(PresentationApp, _React$PureComponent);
+
+  function PresentationApp() {
+    _classCallCheck(this, PresentationApp);
+
+    return _possibleConstructorReturn(this, (PresentationApp.__proto__ || Object.getPrototypeOf(PresentationApp)).apply(this, arguments));
+  }
+
+  _createClass(PresentationApp, [{
+    key: 'render',
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_1_react_cookie__["CookiesProvider"],
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__PresentationComponent__["a" /* default */], null)
+      );
+    }
+  }]);
+
+  return PresentationApp;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.PureComponent);
+
+/* harmony default export */ __webpack_exports__["a"] = (PresentationApp);
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _universalCookie = __webpack_require__(2);
+
+var _universalCookie2 = _interopRequireDefault(_universalCookie);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _universalCookie2.default;
+module.exports = exports['default'];
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _cookie = __webpack_require__(21);
+
+var _cookie2 = _interopRequireDefault(_cookie);
+
+var _objectAssign = __webpack_require__(8);
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+var _utils = __webpack_require__(22);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Cookies = function () {
+  function Cookies(cookies, hooks) {
+    _classCallCheck(this, Cookies);
+
+    this.cookies = parseCookies(cookies);
+    this.hooks = hooks;
+    this.HAS_DOCUMENT_COOKIE = (0, _utils.hasDocumentCookie)();
+  }
+
+  _createClass(Cookies, [{
+    key: '_updateBrowserValues',
+    value: function _updateBrowserValues() {
+      if (!this.HAS_DOCUMENT_COOKIE) {
+        return;
+      }
+
+      this.cookies = _cookie2.default.parse(document.cookie);
+    }
+  }, {
+    key: 'get',
+    value: function get(name) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      this._updateBrowserValues();
+      return readCookie(this.cookies[name], options);
+    }
+  }, {
+    key: 'getAll',
+    value: function getAll() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      this._updateBrowserValues();
+      var result = {};
+
+      for (var name in this.cookies) {
+        result[name] = readCookie(this.cookies[name], options);
+      }
+
+      return result;
+    }
+  }, {
+    key: 'set',
+    value: function set(name, value, options) {
+      if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+        value = JSON.stringify(value);
+      }
+
+      if (this.hooks && this.hooks.onSet) {
+        this.hooks.onSet(name, value, options);
+      }
+
+      this.cookies[name] = value;
+
+      if (this.HAS_DOCUMENT_COOKIE) {
+        document.cookie = _cookie2.default.serialize(name, value, options);
+      }
+    }
+  }, {
+    key: 'remove',
+    value: function remove(name, options) {
+      var finalOptions = options = (0, _objectAssign2.default)({}, options, {
+        expires: new Date(1970, 1, 1, 0, 0, 1),
+        maxAge: 0
+      });
+
+      if (this.hooks && this.hooks.onRemove) {
+        this.hooks.onRemove(name, finalOptions);
+      }
+
+      delete this.cookies[name];
+
+      if (this.HAS_DOCUMENT_COOKIE) {
+        document.cookie = _cookie2.default.serialize(name, '', finalOptions);
+      }
+    }
+  }]);
+
+  return Cookies;
+}();
+
+exports.default = Cookies;
+
+
+function parseCookies(cookies) {
+  if (typeof cookies === 'string') {
+    return _cookie2.default.parse(cookies);
+  } else if ((typeof cookies === 'undefined' ? 'undefined' : _typeof(cookies)) === 'object' && cookies !== null) {
+    return cookies;
+  } else {
+    return {};
+  }
+}
+
+function isParsingCookie(value, doNotParse) {
+  if (typeof doNotParse === 'undefined') {
+    // We guess if the cookie start with { or [, it has been serialized
+    doNotParse = !value || value[0] !== '{' && value[0] !== '[' && value[0] !== '"';
+  }
+
+  return !doNotParse;
+}
+
+function readCookie(value) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  if (isParsingCookie(value, options.doNotParse)) {
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      // At least we tried
+    }
+  }
+
+  return value;
+}
+module.exports = exports['default'];
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*!
+ * cookie
+ * Copyright(c) 2012-2014 Roman Shtylman
+ * Copyright(c) 2015 Douglas Christopher Wilson
+ * MIT Licensed
+ */
+
+
+
+/**
+ * Module exports.
+ * @public
+ */
+
+exports.parse = parse;
+exports.serialize = serialize;
+
+/**
+ * Module variables.
+ * @private
+ */
+
+var decode = decodeURIComponent;
+var encode = encodeURIComponent;
+var pairSplitRegExp = /; */;
+
+/**
+ * RegExp to match field-content in RFC 7230 sec 3.2
+ *
+ * field-content = field-vchar [ 1*( SP / HTAB ) field-vchar ]
+ * field-vchar   = VCHAR / obs-text
+ * obs-text      = %x80-FF
+ */
+
+var fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
+
+/**
+ * Parse a cookie header.
+ *
+ * Parse the given cookie header string into an object
+ * The object has the various cookies as keys(names) => values
+ *
+ * @param {string} str
+ * @param {object} [options]
+ * @return {object}
+ * @public
+ */
+
+function parse(str, options) {
+  if (typeof str !== 'string') {
+    throw new TypeError('argument str must be a string');
+  }
+
+  var obj = {}
+  var opt = options || {};
+  var pairs = str.split(pairSplitRegExp);
+  var dec = opt.decode || decode;
+
+  for (var i = 0; i < pairs.length; i++) {
+    var pair = pairs[i];
+    var eq_idx = pair.indexOf('=');
+
+    // skip things that don't look like key=value
+    if (eq_idx < 0) {
+      continue;
+    }
+
+    var key = pair.substr(0, eq_idx).trim()
+    var val = pair.substr(++eq_idx, pair.length).trim();
+
+    // quoted values
+    if ('"' == val[0]) {
+      val = val.slice(1, -1);
+    }
+
+    // only assign once
+    if (undefined == obj[key]) {
+      obj[key] = tryDecode(val, dec);
+    }
+  }
+
+  return obj;
+}
+
+/**
+ * Serialize data into a cookie header.
+ *
+ * Serialize the a name value pair into a cookie string suitable for
+ * http headers. An optional options object specified cookie parameters.
+ *
+ * serialize('foo', 'bar', { httpOnly: true })
+ *   => "foo=bar; httpOnly"
+ *
+ * @param {string} name
+ * @param {string} val
+ * @param {object} [options]
+ * @return {string}
+ * @public
+ */
+
+function serialize(name, val, options) {
+  var opt = options || {};
+  var enc = opt.encode || encode;
+
+  if (typeof enc !== 'function') {
+    throw new TypeError('option encode is invalid');
+  }
+
+  if (!fieldContentRegExp.test(name)) {
+    throw new TypeError('argument name is invalid');
+  }
+
+  var value = enc(val);
+
+  if (value && !fieldContentRegExp.test(value)) {
+    throw new TypeError('argument val is invalid');
+  }
+
+  var str = name + '=' + value;
+
+  if (null != opt.maxAge) {
+    var maxAge = opt.maxAge - 0;
+    if (isNaN(maxAge)) throw new Error('maxAge should be a Number');
+    str += '; Max-Age=' + Math.floor(maxAge);
+  }
+
+  if (opt.domain) {
+    if (!fieldContentRegExp.test(opt.domain)) {
+      throw new TypeError('option domain is invalid');
+    }
+
+    str += '; Domain=' + opt.domain;
+  }
+
+  if (opt.path) {
+    if (!fieldContentRegExp.test(opt.path)) {
+      throw new TypeError('option path is invalid');
+    }
+
+    str += '; Path=' + opt.path;
+  }
+
+  if (opt.expires) {
+    if (typeof opt.expires.toUTCString !== 'function') {
+      throw new TypeError('option expires is invalid');
+    }
+
+    str += '; Expires=' + opt.expires.toUTCString();
+  }
+
+  if (opt.httpOnly) {
+    str += '; HttpOnly';
+  }
+
+  if (opt.secure) {
+    str += '; Secure';
+  }
+
+  if (opt.sameSite) {
+    var sameSite = typeof opt.sameSite === 'string'
+      ? opt.sameSite.toLowerCase() : opt.sameSite;
+
+    switch (sameSite) {
+      case true:
+        str += '; SameSite=Strict';
+        break;
+      case 'lax':
+        str += '; SameSite=Lax';
+        break;
+      case 'strict':
+        str += '; SameSite=Strict';
+        break;
+      default:
+        throw new TypeError('option sameSite is invalid');
+    }
+  }
+
+  return str;
+}
+
+/**
+ * Try decoding a string using a decoding function.
+ *
+ * @param {string} str
+ * @param {function} decode
+ * @private
+ */
+
+function tryDecode(str, decode) {
+  try {
+    return decode(str);
+  } catch (e) {
+    return str;
+  }
+}
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.hasDocumentCookie = hasDocumentCookie;
+exports.cleanCookies = cleanCookies;
+// Can we get/set cookies on document.cookie?
+
+function hasDocumentCookie() {
+  return (typeof document === 'undefined' ? 'undefined' : _typeof(document)) === 'object' && typeof document.cookie === 'string';
+}
+
+//backwards compatibility
+var HAS_DOCUMENT_COOKIE = exports.HAS_DOCUMENT_COOKIE = hasDocumentCookie();
+
+function cleanCookies() {
+  document.cookie.split(';').forEach(function (c) {
+    document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+  });
+}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _propTypes = __webpack_require__(3);
+
+var _universalCookie = __webpack_require__(2);
+
+var _universalCookie2 = _interopRequireDefault(_universalCookie);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CookiesProvider = function (_Component) {
+  _inherits(CookiesProvider, _Component);
+
+  function CookiesProvider(props) {
+    _classCallCheck(this, CookiesProvider);
+
+    var _this = _possibleConstructorReturn(this, (CookiesProvider.__proto__ || Object.getPrototypeOf(CookiesProvider)).call(this, props));
+
+    if (props.cookies) {
+      _this.cookies = props.cookies;
+    } else {
+      _this.cookies = new _universalCookie2.default();
+    }
+    return _this;
+  }
+
+  _createClass(CookiesProvider, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        cookies: this.cookies
+      };
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return this.props.children;
+    }
+  }]);
+
+  return CookiesProvider;
+}(_react.Component);
+
+CookiesProvider.propTypes = {
+  children: _propTypes.node,
+  cookies: (0, _propTypes.instanceOf)(_universalCookie2.default)
+};
+CookiesProvider.childContextTypes = {
+  cookies: (0, _propTypes.instanceOf)(_universalCookie2.default).isRequired
+};
+exports.default = CookiesProvider;
+module.exports = exports['default'];
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var emptyFunction = __webpack_require__(4);
+var invariant = __webpack_require__(5);
+var warning = __webpack_require__(9);
+var assign = __webpack_require__(8);
+
+var ReactPropTypesSecret = __webpack_require__(6);
+var checkPropTypes = __webpack_require__(25);
+
+module.exports = function(isValidElement, throwOnDirectAccess) {
+  /* global Symbol */
+  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+  /**
+   * Returns the iterator method function contained on the iterable object.
+   *
+   * Be sure to invoke the function with the iterable as context:
+   *
+   *     var iteratorFn = getIteratorFn(myIterable);
+   *     if (iteratorFn) {
+   *       var iterator = iteratorFn.call(myIterable);
+   *       ...
+   *     }
+   *
+   * @param {?object} maybeIterable
+   * @return {?function}
+   */
+  function getIteratorFn(maybeIterable) {
+    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+    if (typeof iteratorFn === 'function') {
+      return iteratorFn;
+    }
+  }
+
+  /**
+   * Collection of methods that allow declaration and validation of props that are
+   * supplied to React components. Example usage:
+   *
+   *   var Props = require('ReactPropTypes');
+   *   var MyArticle = React.createClass({
+   *     propTypes: {
+   *       // An optional string prop named "description".
+   *       description: Props.string,
+   *
+   *       // A required enum prop named "category".
+   *       category: Props.oneOf(['News','Photos']).isRequired,
+   *
+   *       // A prop named "dialog" that requires an instance of Dialog.
+   *       dialog: Props.instanceOf(Dialog).isRequired
+   *     },
+   *     render: function() { ... }
+   *   });
+   *
+   * A more formal specification of how these methods are used:
+   *
+   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+   *   decl := ReactPropTypes.{type}(.isRequired)?
+   *
+   * Each and every declaration produces a function with the same signature. This
+   * allows the creation of custom validation functions. For example:
+   *
+   *  var MyLink = React.createClass({
+   *    propTypes: {
+   *      // An optional string or URI prop named "href".
+   *      href: function(props, propName, componentName) {
+   *        var propValue = props[propName];
+   *        if (propValue != null && typeof propValue !== 'string' &&
+   *            !(propValue instanceof URI)) {
+   *          return new Error(
+   *            'Expected a string or an URI for ' + propName + ' in ' +
+   *            componentName
+   *          );
+   *        }
+   *      }
+   *    },
+   *    render: function() {...}
+   *  });
+   *
+   * @internal
+   */
+
+  var ANONYMOUS = '<<anonymous>>';
+
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+  var ReactPropTypes = {
+    array: createPrimitiveTypeChecker('array'),
+    bool: createPrimitiveTypeChecker('boolean'),
+    func: createPrimitiveTypeChecker('function'),
+    number: createPrimitiveTypeChecker('number'),
+    object: createPrimitiveTypeChecker('object'),
+    string: createPrimitiveTypeChecker('string'),
+    symbol: createPrimitiveTypeChecker('symbol'),
+
+    any: createAnyTypeChecker(),
+    arrayOf: createArrayOfTypeChecker,
+    element: createElementTypeChecker(),
+    instanceOf: createInstanceTypeChecker,
+    node: createNodeChecker(),
+    objectOf: createObjectOfTypeChecker,
+    oneOf: createEnumTypeChecker,
+    oneOfType: createUnionTypeChecker,
+    shape: createShapeTypeChecker,
+    exact: createStrictShapeTypeChecker,
+  };
+
+  /**
+   * inlined Object.is polyfill to avoid requiring consumers ship their own
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+   */
+  /*eslint-disable no-self-compare*/
+  function is(x, y) {
+    // SameValue algorithm
+    if (x === y) {
+      // Steps 1-5, 7-10
+      // Steps 6.b-6.e: +0 != -0
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+      // Step 6.a: NaN == NaN
+      return x !== x && y !== y;
+    }
+  }
+  /*eslint-enable no-self-compare*/
+
+  /**
+   * We use an Error-like object for backward compatibility as people may call
+   * PropTypes directly and inspect their output. However, we don't use real
+   * Errors anymore. We don't inspect their stack anyway, and creating them
+   * is prohibitively expensive if they are created too often, such as what
+   * happens in oneOfType() for any type before the one that matched.
+   */
+  function PropTypeError(message) {
+    this.message = message;
+    this.stack = '';
+  }
+  // Make `instanceof Error` still work for returned errors.
+  PropTypeError.prototype = Error.prototype;
+
+  function createChainableTypeChecker(validate) {
+    if (process.env.NODE_ENV !== 'production') {
+      var manualPropTypeCallCache = {};
+      var manualPropTypeWarningCount = 0;
+    }
+    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+      componentName = componentName || ANONYMOUS;
+      propFullName = propFullName || propName;
+
+      if (secret !== ReactPropTypesSecret) {
+        if (throwOnDirectAccess) {
+          // New behavior only for users of `prop-types` package
+          invariant(
+            false,
+            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+            'Use `PropTypes.checkPropTypes()` to call them. ' +
+            'Read more at http://fb.me/use-check-prop-types'
+          );
+        } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
+          // Old behavior for people using React.PropTypes
+          var cacheKey = componentName + ':' + propName;
+          if (
+            !manualPropTypeCallCache[cacheKey] &&
+            // Avoid spamming the console because they are often not actionable except for lib authors
+            manualPropTypeWarningCount < 3
+          ) {
+            warning(
+              false,
+              'You are manually calling a React.PropTypes validation ' +
+              'function for the `%s` prop on `%s`. This is deprecated ' +
+              'and will throw in the standalone `prop-types` package. ' +
+              'You may be seeing this warning due to a third-party PropTypes ' +
+              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.',
+              propFullName,
+              componentName
+            );
+            manualPropTypeCallCache[cacheKey] = true;
+            manualPropTypeWarningCount++;
+          }
+        }
+      }
+      if (props[propName] == null) {
+        if (isRequired) {
+          if (props[propName] === null) {
+            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+          }
+          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+        }
+        return null;
+      } else {
+        return validate(props, propName, componentName, location, propFullName);
+      }
+    }
+
+    var chainedCheckType = checkType.bind(null, false);
+    chainedCheckType.isRequired = checkType.bind(null, true);
+
+    return chainedCheckType;
+  }
+
+  function createPrimitiveTypeChecker(expectedType) {
+    function validate(props, propName, componentName, location, propFullName, secret) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== expectedType) {
+        // `propValue` being instance of, say, date/regexp, pass the 'object'
+        // check, but we can offer a more precise error message here rather than
+        // 'of type `object`'.
+        var preciseType = getPreciseType(propValue);
+
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createAnyTypeChecker() {
+    return createChainableTypeChecker(emptyFunction.thatReturnsNull);
+  }
+
+  function createArrayOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+      }
+      var propValue = props[propName];
+      if (!Array.isArray(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+      }
+      for (var i = 0; i < propValue.length; i++) {
+        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
+        if (error instanceof Error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!isValidElement(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createInstanceTypeChecker(expectedClass) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!(props[propName] instanceof expectedClass)) {
+        var expectedClassName = expectedClass.name || ANONYMOUS;
+        var actualClassName = getClassName(props[propName]);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createEnumTypeChecker(expectedValues) {
+    if (!Array.isArray(expectedValues)) {
+      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
+      return emptyFunction.thatReturnsNull;
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      for (var i = 0; i < expectedValues.length; i++) {
+        if (is(propValue, expectedValues[i])) {
+          return null;
+        }
+      }
+
+      var valuesString = JSON.stringify(expectedValues);
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createObjectOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+      }
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+      }
+      for (var key in propValue) {
+        if (propValue.hasOwnProperty(key)) {
+          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+          if (error instanceof Error) {
+            return error;
+          }
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createUnionTypeChecker(arrayOfTypeCheckers) {
+    if (!Array.isArray(arrayOfTypeCheckers)) {
+      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+      return emptyFunction.thatReturnsNull;
+    }
+
+    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+      var checker = arrayOfTypeCheckers[i];
+      if (typeof checker !== 'function') {
+        warning(
+          false,
+          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
+          'received %s at index %s.',
+          getPostfixForTypeWarning(checker),
+          i
+        );
+        return emptyFunction.thatReturnsNull;
+      }
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+        var checker = arrayOfTypeCheckers[i];
+        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
+          return null;
+        }
+      }
+
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createNodeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!isNode(props[propName])) {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      for (var key in shapeTypes) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          continue;
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createStrictShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      // We need to check all keys in case some are required but missing from
+      // props.
+      var allKeys = assign({}, props[propName], shapeTypes);
+      for (var key in allKeys) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          return new PropTypeError(
+            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
+            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
+            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+          );
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function isNode(propValue) {
+    switch (typeof propValue) {
+      case 'number':
+      case 'string':
+      case 'undefined':
+        return true;
+      case 'boolean':
+        return !propValue;
+      case 'object':
+        if (Array.isArray(propValue)) {
+          return propValue.every(isNode);
+        }
+        if (propValue === null || isValidElement(propValue)) {
+          return true;
+        }
+
+        var iteratorFn = getIteratorFn(propValue);
+        if (iteratorFn) {
+          var iterator = iteratorFn.call(propValue);
+          var step;
+          if (iteratorFn !== propValue.entries) {
+            while (!(step = iterator.next()).done) {
+              if (!isNode(step.value)) {
+                return false;
+              }
+            }
+          } else {
+            // Iterator will provide entry [k,v] tuples rather than values.
+            while (!(step = iterator.next()).done) {
+              var entry = step.value;
+              if (entry) {
+                if (!isNode(entry[1])) {
+                  return false;
+                }
+              }
+            }
+          }
+        } else {
+          return false;
+        }
+
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  function isSymbol(propType, propValue) {
+    // Native Symbol.
+    if (propType === 'symbol') {
+      return true;
+    }
+
+    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+    if (propValue['@@toStringTag'] === 'Symbol') {
+      return true;
+    }
+
+    // Fallback for non-spec compliant Symbols which are polyfilled.
+    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // Equivalent of `typeof` but with special handling for array and regexp.
+  function getPropType(propValue) {
+    var propType = typeof propValue;
+    if (Array.isArray(propValue)) {
+      return 'array';
+    }
+    if (propValue instanceof RegExp) {
+      // Old webkits (at least until Android 4.0) return 'function' rather than
+      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+      // passes PropTypes.object.
+      return 'object';
+    }
+    if (isSymbol(propType, propValue)) {
+      return 'symbol';
+    }
+    return propType;
+  }
+
+  // This handles more types than `getPropType`. Only used for error messages.
+  // See `createPrimitiveTypeChecker`.
+  function getPreciseType(propValue) {
+    if (typeof propValue === 'undefined' || propValue === null) {
+      return '' + propValue;
+    }
+    var propType = getPropType(propValue);
+    if (propType === 'object') {
+      if (propValue instanceof Date) {
+        return 'date';
+      } else if (propValue instanceof RegExp) {
+        return 'regexp';
+      }
+    }
+    return propType;
+  }
+
+  // Returns a string that is postfixed to a warning about an invalid type.
+  // For example, "undefined" or "of type array"
+  function getPostfixForTypeWarning(value) {
+    var type = getPreciseType(value);
+    switch (type) {
+      case 'array':
+      case 'object':
+        return 'an ' + type;
+      case 'boolean':
+      case 'date':
+      case 'regexp':
+        return 'a ' + type;
+      default:
+        return type;
+    }
+  }
+
+  // Returns class name of the object, if any.
+  function getClassName(propValue) {
+    if (!propValue.constructor || !propValue.constructor.name) {
+      return ANONYMOUS;
+    }
+    return propValue.constructor.name;
+  }
+
+  ReactPropTypes.checkPropTypes = checkPropTypes;
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+if (process.env.NODE_ENV !== 'production') {
+  var invariant = __webpack_require__(5);
+  var warning = __webpack_require__(9);
+  var ReactPropTypesSecret = __webpack_require__(6);
+  var loggedTypeFailures = {};
+}
+
+/**
+ * Assert that the values match with the type specs.
+ * Error messages are memorized and will only be shown once.
+ *
+ * @param {object} typeSpecs Map of name to a ReactPropType
+ * @param {object} values Runtime values that need to be type-checked
+ * @param {string} location e.g. "prop", "context", "child context"
+ * @param {string} componentName Name of the component for error messages.
+ * @param {?Function} getStack Returns the component stack.
+ * @private
+ */
+function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+  if (process.env.NODE_ENV !== 'production') {
+    for (var typeSpecName in typeSpecs) {
+      if (typeSpecs.hasOwnProperty(typeSpecName)) {
+        var error;
+        // Prop type validation may throw. In case they do, we don't want to
+        // fail the render phase where it didn't fail before. So we log it.
+        // After these have been cleaned up, we'll let them throw.
+        try {
+          // This is intentionally an invariant that gets caught. It's the same
+          // behavior as without this statement except with a better message.
+          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+        } catch (ex) {
+          error = ex;
+        }
+        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+          // Only monitor this failure once because there tends to be a lot of the
+          // same error.
+          loggedTypeFailures[error.message] = true;
+
+          var stack = getStack ? getStack() : '';
+
+          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+        }
+      }
+    }
+  }
+}
+
+module.exports = checkPropTypes;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var emptyFunction = __webpack_require__(4);
+var invariant = __webpack_require__(5);
+var ReactPropTypesSecret = __webpack_require__(6);
+
+module.exports = function() {
+  function shim(props, propName, componentName, location, propFullName, secret) {
+    if (secret === ReactPropTypesSecret) {
+      // It is still safe when called from React.
+      return;
+    }
+    invariant(
+      false,
+      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+      'Use PropTypes.checkPropTypes() to call them. ' +
+      'Read more at http://fb.me/use-check-prop-types'
+    );
+  };
+  shim.isRequired = shim;
+  function getShim() {
+    return shim;
+  };
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+  var ReactPropTypes = {
+    array: shim,
+    bool: shim,
+    func: shim,
+    number: shim,
+    object: shim,
+    string: shim,
+    symbol: shim,
+
+    any: shim,
+    arrayOf: getShim,
+    element: shim,
+    instanceOf: getShim,
+    node: shim,
+    objectOf: getShim,
+    oneOf: getShim,
+    oneOfType: getShim,
+    shape: getShim,
+    exact: getShim
+  };
+
+  ReactPropTypes.checkPropTypes = emptyFunction;
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = withCookies;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(3);
+
+var _universalCookie = __webpack_require__(2);
+
+var _universalCookie2 = _interopRequireDefault(_universalCookie);
+
+var _hoistNonReactStatics = __webpack_require__(28);
+
+var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function withCookies(Component) {
+  function Wrapper(props, _ref) {
+    var cookies = _ref.cookies;
+
+    var wrappedComponentRef = props.wrappedComponentRef,
+        remainingProps = _objectWithoutProperties(props, ['wrappedComponentRef']);
+
+    return _react2.default.createElement(Component, _extends({}, remainingProps, {
+      cookies: cookies,
+      ref: wrappedComponentRef
+    }));
+  }
+
+  Wrapper.displayName = 'withCookies(' + (Component.displayName || Component.name) + ')';
+  Wrapper.WrappedComponent = Component;
+
+  Wrapper.propTypes = {
+    wrappedComponentRef: _propTypes.func
+  };
+
+  Wrapper.contextTypes = {
+    cookies: (0, _propTypes.instanceOf)(_universalCookie2.default).isRequired
+  };
+
+  return (0, _hoistNonReactStatics2.default)(Wrapper, Component);
+}
+module.exports = exports['default'];
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright 2015, Yahoo! Inc.
+ * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+
+
+var REACT_STATICS = {
+    childContextTypes: true,
+    contextTypes: true,
+    defaultProps: true,
+    displayName: true,
+    getDefaultProps: true,
+    mixins: true,
+    propTypes: true,
+    type: true
+};
+
+var KNOWN_STATICS = {
+    name: true,
+    length: true,
+    prototype: true,
+    caller: true,
+    arguments: true,
+    arity: true
+};
+
+var isGetOwnPropertySymbolsAvailable = typeof Object.getOwnPropertySymbols === 'function';
+
+module.exports = function hoistNonReactStatics(targetComponent, sourceComponent, customStatics) {
+    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+        var keys = Object.getOwnPropertyNames(sourceComponent);
+
+        /* istanbul ignore else */
+        if (isGetOwnPropertySymbolsAvailable) {
+            keys = keys.concat(Object.getOwnPropertySymbols(sourceComponent));
+        }
+
+        for (var i = 0; i < keys.length; ++i) {
+            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]] && (!customStatics || !customStatics[keys[i]])) {
+                try {
+                    targetComponent[keys[i]] = sourceComponent[keys[i]];
+                } catch (error) {
+
+                }
+            }
+        }
+    }
+
+    return targetComponent;
+};
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PresentationComponent__ = __webpack_require__(30);
+
+
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__PresentationComponent__["a" /* default */]);
+
+/***/ }),
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_plugin_react_css_modules_dist_browser_getClassName__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_plugin_react_css_modules_dist_browser_getClassName___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_plugin_react_css_modules_dist_browser_getClassName__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_swiper__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__PresentationApp_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__PresentationApp_scss__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__PresentationApp_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__PresentationApp_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_cookie__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_cookie___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_cookie__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_swiper__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_package_json__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_package_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_package_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__PresentationComponent_json__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__PresentationComponent_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__PresentationComponent_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__PresentationComponent_scss__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__PresentationComponent_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__PresentationComponent_scss__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 
 var _styleModuleImportMap = {
-  './PresentationApp.scss': {
-    'PresentationApp': 'PresentationApp__PresentationApp___2SSdq',
-    'PresentationApp-closed': 'PresentationApp__PresentationApp-closed___1F7uG',
-    'button': 'PresentationApp__button___1Fa0W',
-    'logo': 'PresentationApp__logo___UNfQL',
-    'logo-desktop': 'PresentationApp__logo-desktop___3b7pB',
-    'logo-mobile': 'PresentationApp__logo-mobile___3n0CN',
-    'background': 'PresentationApp__background___1ULQz',
-    'background-desktop': 'PresentationApp__background-desktop___GaDlq',
-    'background-mobile': 'PresentationApp__background-mobile___1IFf9',
-    'cells': 'PresentationApp__cells___2LH2K',
-    'cell': 'PresentationApp__cell___yILof',
-    'cell-desktop': 'PresentationApp__cell-desktop___cso4O',
-    'cell-mobile': 'PresentationApp__cell-mobile___3bcpy',
-    'cell-1': 'PresentationApp__cell-1___2OQDG',
-    'cell-2': 'PresentationApp__cell-2___1jb-r',
-    'foreground': 'PresentationApp__foreground___33lbg',
-    'foreground-desktop': 'PresentationApp__foreground-desktop___1up1J',
-    'foreground-mobile': 'PresentationApp__foreground-mobile___2eHva',
-    'details': 'PresentationApp__details___1EbPS',
-    'message': 'PresentationApp__message___3-JjC',
-    'buttons': 'PresentationApp__buttons___1RIuj',
-    'button-next': 'PresentationApp__button-next___2Th7q',
-    'button-prev': 'PresentationApp__button-prev___3RPRp',
-    'button-signin': 'PresentationApp__button-signin___2-Gys',
-    'details-desktop': 'PresentationApp__details-desktop___1GKAu',
-    'details-mobile': 'PresentationApp__details-mobile___lN-18'
+  './PresentationComponent.scss': {
+    'PresentationComponent': 'PresentationComponent__PresentationComponent___jKZHo',
+    'PresentationComponent-closed': 'PresentationComponent__PresentationComponent-closed___2jRFJ',
+    'button': 'PresentationComponent__button___3tWiq',
+    'logo': 'PresentationComponent__logo___2Y19K',
+    'logo-desktop': 'PresentationComponent__logo-desktop___1CMmK',
+    'logo-mobile': 'PresentationComponent__logo-mobile___1gdK1',
+    'background': 'PresentationComponent__background___1pZnP',
+    'background-desktop': 'PresentationComponent__background-desktop___ws_fD',
+    'background-mobile': 'PresentationComponent__background-mobile___2hIEy',
+    'cells': 'PresentationComponent__cells___15u6J',
+    'cell': 'PresentationComponent__cell___1UGET',
+    'cell-desktop': 'PresentationComponent__cell-desktop___ErafQ',
+    'cell-mobile': 'PresentationComponent__cell-mobile___1EBs2',
+    'cell-1': 'PresentationComponent__cell-1___1sIt0',
+    'cell-2': 'PresentationComponent__cell-2___122_A',
+    'foreground': 'PresentationComponent__foreground___1822E',
+    'foreground-desktop': 'PresentationComponent__foreground-desktop___3UiFV',
+    'foreground-mobile': 'PresentationComponent__foreground-mobile___1zx_5',
+    'details': 'PresentationComponent__details___19aPA',
+    'message': 'PresentationComponent__message___2_zxz',
+    'buttons': 'PresentationComponent__buttons___1XNh3',
+    'button-next': 'PresentationComponent__button-next___1m7-O',
+    'button-prev': 'PresentationComponent__button-prev___2eyct',
+    'button-signin': 'PresentationComponent__button-signin___27_y4',
+    'details-desktop': 'PresentationComponent__details-desktop___3FmtC',
+    'details-mobile': 'PresentationComponent__details-mobile___L6mD2'
   }
 };
 
@@ -304,30 +2215,47 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 
 
-// import ReactDOM from 'react-dom'
 
 
 
 
+// eslint-disable-next-line
 
-var PresentationApp = function (_React$PureComponent) {
-  _inherits(PresentationApp, _React$PureComponent);
 
-  function PresentationApp(props) {
-    _classCallCheck(this, PresentationApp);
 
-    var _this = _possibleConstructorReturn(this, (PresentationApp.__proto__ || Object.getPrototypeOf(PresentationApp)).call(this, props));
 
-    _this.state = {
-      open: true
-    };
-    return _this;
+var COOKIE_NAME = 'chronomint-presentation-version';
+
+var PresentationComponent = function (_React$PureComponent) {
+  _inherits(PresentationComponent, _React$PureComponent);
+
+  function PresentationComponent() {
+    _classCallCheck(this, PresentationComponent);
+
+    return _possibleConstructorReturn(this, (PresentationComponent.__proto__ || Object.getPrototypeOf(PresentationComponent)).apply(this, arguments));
   }
 
-  _createClass(PresentationApp, [{
+  _createClass(PresentationComponent, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var cookies = this.props.cookies;
+
+      var shown = cookies.get(COOKIE_NAME) === __WEBPACK_IMPORTED_MODULE_6_package_json___default.a.version;
+      // eslint-disable-next-line
+      this.setState({
+        open: !shown
+      });
+      if (!shown) {
+        var expires = new Date();
+        expires.setFullYear(expires.getFullYear() + 1);
+        // eslint-disable-next-line
+        cookies.set(COOKIE_NAME, __WEBPACK_IMPORTED_MODULE_6_package_json___default.a.version, { path: '/', expires: expires });
+      }
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.swiper = new __WEBPACK_IMPORTED_MODULE_3_swiper__["a" /* default */](this.swiperContainer, {
+      this.swiper = new __WEBPACK_IMPORTED_MODULE_5_swiper__["a" /* default */](this.swiperContainer, {
         pagination: {
           el: this.swiperPagination
         },
@@ -358,9 +2286,9 @@ var PresentationApp = function (_React$PureComponent) {
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         'div',
         {
-          className: __WEBPACK_IMPORTED_MODULE_0_babel_plugin_react_css_modules_dist_browser_getClassName___default()(__WEBPACK_IMPORTED_MODULE_2_classnames___default()({
-            'PresentationApp': true,
-            'PresentationApp-closed': !this.state.open
+          className: __WEBPACK_IMPORTED_MODULE_0_babel_plugin_react_css_modules_dist_browser_getClassName___default()(__WEBPACK_IMPORTED_MODULE_4_classnames___default()({
+            'PresentationComponent': true,
+            'PresentationComponent-closed': !this.state.open
           }), _styleModuleImportMap)
         },
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -374,14 +2302,14 @@ var PresentationApp = function (_React$PureComponent) {
               null,
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'button',
-                { className: 'PresentationApp__logo___UNfQL PresentationApp__logo-desktop___3b7pB', onClick: function onClick() {
+                { className: 'PresentationComponent__logo___2Y19K PresentationComponent__logo-desktop___1CMmK', onClick: function onClick() {
                     return _this3.handleSignin();
                   } },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/chronomint-presentation/img/logo-chronobank.svg', alt: 'ChronoBank Logo' })
               ),
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'button',
-                { className: 'PresentationApp__logo___UNfQL PresentationApp__logo-mobile___3n0CN', onClick: function onClick() {
+                { className: 'PresentationComponent__logo___2Y19K PresentationComponent__logo-mobile___1gdK1', onClick: function onClick() {
                     return _this3.handleSignin();
                   } },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/chronomint-presentation/img/logo-chronobank-mobile.svg', alt: 'ChronoBank Logo' })
@@ -396,7 +2324,7 @@ var PresentationApp = function (_React$PureComponent) {
               null,
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'button',
-                { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
+                { className: 'PresentationComponent__button___3tWiq', onClick: function onClick() {
                     return _this3.handleSignin();
                   } },
                 'Sign In'
@@ -415,68 +2343,68 @@ var PresentationApp = function (_React$PureComponent) {
             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
               'div',
               { className: 'swiper-wrapper' },
-              __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.map(function (slide, index) {
+              __WEBPACK_IMPORTED_MODULE_7__PresentationComponent_json___default.a.slides.map(function (slide, index) {
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                   'div',
                   { className: 'swiper-slide', key: slide.name },
-                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__background___1ULQz PresentationApp__background-desktop___GaDlq', src: slide.bg, alt: 'Slide ' + (index + 1) }),
-                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__background___1ULQz PresentationApp__background-mobile___1IFf9', src: slide.bgMobile, alt: 'Slide ' + (index + 1) }),
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationComponent__background___1pZnP PresentationComponent__background-desktop___ws_fD', src: slide.bg, alt: 'Slide ' + (index + 1) }),
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationComponent__background___1pZnP PresentationComponent__background-mobile___2hIEy', src: slide.bgMobile, alt: 'Slide ' + (index + 1) }),
                   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
-                    { className: 'PresentationApp__cells___2LH2K' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__cell___yILof PresentationApp__cell-1___2OQDG PresentationApp__cell-desktop___cso4O' }),
+                    { className: 'PresentationComponent__cells___15u6J' },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationComponent__cell___1UGET PresentationComponent__cell-1___1sIt0 PresentationComponent__cell-desktop___ErafQ' }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', {
-                      className: 'PresentationApp__cell___yILof PresentationApp__cell-1___2OQDG PresentationApp__cell-mobile___3bcpy',
+                      className: 'PresentationComponent__cell___1UGET PresentationComponent__cell-1___1sIt0 PresentationComponent__cell-mobile___1EBs2',
                       style: {
                         height: slide.mobileTopSpacerHeight
                       }
                     }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'div',
-                      { className: 'PresentationApp__cell___yILof PresentationApp__cell-2___1jb-r' },
-                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__foreground___33lbg PresentationApp__foreground-desktop___1up1J', style: { margin: slide.fgMargin }, src: slide.fg, alt: 'Slide ' + (index + 1) }),
-                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__foreground___33lbg PresentationApp__foreground-mobile___2eHva', src: slide.fg, alt: 'Slide ' + (index + 1) }),
+                      { className: 'PresentationComponent__cell___1UGET PresentationComponent__cell-2___122_A' },
+                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationComponent__foreground___1822E PresentationComponent__foreground-desktop___3UiFV', style: { margin: slide.fgMargin }, src: slide.fg, alt: 'Slide ' + (index + 1) }),
+                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationComponent__foreground___1822E PresentationComponent__foreground-mobile___1zx_5', src: slide.fg, alt: 'Slide ' + (index + 1) }),
                       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
-                        { className: 'PresentationApp__details___1EbPS PresentationApp__details-desktop___1GKAu', style: { margin: slide.detailsMargin } },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__message___3-JjC', dangerouslySetInnerHTML: { __html: slide.promo } }),
+                        { className: 'PresentationComponent__details___19aPA PresentationComponent__details-desktop___3FmtC', style: { margin: slide.detailsMargin } },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationComponent__message___2_zxz', dangerouslySetInnerHTML: { __html: slide.promo } }),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                           'div',
-                          { className: 'PresentationApp__buttons___1RIuj' },
+                          { className: 'PresentationComponent__buttons___1XNh3' },
                           index === 0 ? null : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'button',
-                            { className: 'swiper-button-prev PresentationApp__button___1Fa0W PresentationApp__button-prev___3RPRp' },
+                            { className: 'swiper-button-prev PresentationComponent__button___3tWiq PresentationComponent__button-prev___2eyct' },
                             'Prev'
                           ),
-                          index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                          index === __WEBPACK_IMPORTED_MODULE_7__PresentationComponent_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'button',
-                            { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
+                            { className: 'PresentationComponent__button___3tWiq', onClick: function onClick() {
                                 return _this3.handleSignin();
                               } },
                             'Sign In'
                           ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'button',
-                            { className: 'swiper-button-next PresentationApp__button___1Fa0W PresentationApp__button-next___2Th7q' },
+                            { className: 'swiper-button-next PresentationComponent__button___3tWiq PresentationComponent__button-next___1m7-O' },
                             'Next'
                           )
                         )
                       ),
                       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
-                        { className: 'PresentationApp__details___1EbPS PresentationApp__details-mobile___lN-18' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__message___3-JjC', dangerouslySetInnerHTML: { __html: slide.promo } }),
+                        { className: 'PresentationComponent__details___19aPA PresentationComponent__details-mobile___L6mD2' },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationComponent__message___2_zxz', dangerouslySetInnerHTML: { __html: slide.promo } }),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                           'div',
-                          { className: 'PresentationApp__buttons___1RIuj' },
-                          index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                          { className: 'PresentationComponent__buttons___1XNh3' },
+                          index === __WEBPACK_IMPORTED_MODULE_7__PresentationComponent_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'button',
-                            { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
+                            { className: 'PresentationComponent__button___3tWiq', onClick: function onClick() {
                                 return _this3.handleSignin();
                               } },
                             'Sign In'
                           ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'button',
-                            { className: 'swiper-button-next PresentationApp__button___1Fa0W PresentationApp__button-next___2Th7q' },
+                            { className: 'swiper-button-next PresentationComponent__button___3tWiq PresentationComponent__button-next___1m7-O' },
                             'Next'
                           )
                         )
@@ -495,13 +2423,18 @@ var PresentationApp = function (_React$PureComponent) {
     }
   }]);
 
-  return PresentationApp;
+  return PresentationComponent;
 }(__WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent);
 
-/* harmony default export */ __webpack_exports__["a"] = (PresentationApp);
+PresentationComponent.propTypes = {
+  cookies: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.instanceOf(__WEBPACK_IMPORTED_MODULE_3_react_cookie__["Cookies"]).isRequired
+};
+
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_3_react_cookie__["withCookies"])(PresentationComponent));
 
 /***/ }),
-/* 9 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -605,13 +2538,7 @@ exports.default = function (styleNameValue, styleModuleImportMap, options) {
 //# sourceMappingURL=getClassName.js.map
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = React;
-
-/***/ }),
-/* 11 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -666,14 +2593,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 12 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dom7_dist_dom7_modular__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ssr_window__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dom7_dist_dom7_modular__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ssr_window__ = __webpack_require__(10);
 /**
- * Swiper 4.1.5
+ * Swiper 4.1.6
  * Most modern mobile touch slider and framework with hardware accelerated transitions
  * http://www.idangero.us/swiper/
  *
@@ -681,7 +2608,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  *
  * Released under the MIT License
  *
- * Released on: February 10, 2018
+ * Released on: February 11, 2018
  */
 
 
@@ -2277,7 +4204,7 @@ var onTouchMove = function (event) {
   let e = event;
   if (e.originalEvent) e = e.originalEvent;
   if (!data$$1.isTouched) {
-    if (data$$1.isMoved && data$$1.isScrolling) {
+    if (data$$1.startMoving && data$$1.isScrolling) {
       swiper.emit('touchMoveOpposite', e);
     }
     return;
@@ -2488,6 +4415,7 @@ var onTouchEnd = function (event) {
       swiper.setGrabCursor(false);
     }
     data$$1.isMoved = false;
+    data$$1.startMoving = false;
     return;
   }
   // Return Grab Cursor
@@ -2524,10 +4452,12 @@ var onTouchEnd = function (event) {
   if (!data$$1.isTouched || !data$$1.isMoved || !swiper.swipeDirection || touches.diff === 0 || data$$1.currentTranslate === data$$1.startTranslate) {
     data$$1.isTouched = false;
     data$$1.isMoved = false;
+    data$$1.startMoving = false;
     return;
   }
   data$$1.isTouched = false;
   data$$1.isMoved = false;
+  data$$1.startMoving = false;
 
   let currentPos;
   if (params.followFinger) {
@@ -7150,7 +9080,7 @@ Swiper$1.use(components);
 
 
 /***/ }),
-/* 13 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7241,7 +9171,7 @@ Swiper$1.use(components);
 /* unused harmony export touchmove */
 /* unused harmony export resize */
 /* unused harmony export scroll */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ssr_window__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ssr_window__ = __webpack_require__(10);
 /**
  * Dom7 2.0.2
  * Minimalistic JavaScript library for DOM manipulation, with a jQuery-compatible API
@@ -8575,80 +10505,23 @@ function scroll(...args) {
 
 
 /***/ }),
-/* 14 */
+/* 35 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"slides": [
-		{
-			"name": "slide-01",
-			"promo": "<p>Start to control your money using <b>Chrono Wallet</b> removing intermediates e.g. banks, and making your funds and transfers under your control, fast and safe.</p>",
-			"detailsMargin": "24px 7% 24px 32%",
-			"fgMargin": "0 14% 0 -4%",
-			"mobileTopSpacerHeight": "10vw",
-			"bg": "/chronomint-presentation/img/slides/slide-01-bg.jpg",
-			"bgMobile": "/chronomint-presentation/img/slides/slide-01-bg-mobile.jpg",
-			"fg": "/chronomint-presentation/img/slides/slide-01-fg.svg"
-		},
-		{
-			"name": "slide-02",
-			"promo": "<p><b>Chrono Wallet is a gate to the global block-chain network, controlled by all the participants including you.</b></p><p>Block-chain is an innovative, anonymous and the most safe technology of storing digital money and transactions. The network data is stored on each participants’ computers and syncing on every update. The transaction confirmation system makes block-chain network the most secure in the world up-to-date.</p>",
-			"detailsMargin": "24px 7% 24px 20%",
-			"fgMargin": "0 14% 0 -4%",
-			"mobileTopSpacerHeight": "75vw",
-			"bg": "/chronomint-presentation/img/slides/slide-02-bg.jpg",
-			"bgMobile": "/chronomint-presentation/img/slides/slide-02-bg-mobile.jpg",
-			"fg": "/chronomint-presentation/img/slides/slide-02-fg.svg"
-		},
-		{
-			"name": "slide-03",
-			"promo": "<p><b>We do not store any login, funds and transactions data on our servers for your safety.</b></p><p>You may use the network being anonymous. All your transactions will be reflected as an address with received or sent funds.</p><p>Consider your address as your personal bank account. Double checking of an address you are sending to is a good idea!</p>",
-			"detailsMargin": "24px 7% 24px 14%",
-			"fgMargin": "0 14% 0 -4%",
-			"mobileTopSpacerHeight": "75vw",
-			"bg": "/chronomint-presentation/img/slides/slide-03-bg.jpg",
-			"bgMobile": "/chronomint-presentation/img/slides/slide-03-bg-mobile.jpg",
-			"fg": "/chronomint-presentation/img/slides/slide-03-fg.svg"
-		},
-		{
-			"name": "slide-04",
-			"promo": "<p><b>Chrono Wallet will generate the following for you:</b></p><p><i>Private key</i> to access the network. The private key is a file secured by password on your device.</p><p><i>12 words password (Mnemonic Key),</i> which is just an another method of storing your private key. Copy this password on a paper and keep it in a safe place. Both file and mnemonic key can be used to restore your account if something will go wrong.</p><p><i>Addresses</i> to deposit and withdraw funds. You may give the receiving address to other network participant, so they can send you money. You will also use another address to send funds.</p>",
-			"detailsMargin": "24px 7% 24px 10%",
-			"fgMargin": "0 24% 0 0%",
-			"mobileTopSpacerHeight": "75vw",
-			"bg": "/chronomint-presentation/img/slides/slide-04-bg.jpg",
-			"bgMobile": "/chronomint-presentation/img/slides/slide-04-bg-mobile.jpg",
-			"fg": "/chronomint-presentation/img/slides/slide-04-fg.svg"
-		},
-		{
-			"name": "slide-05",
-			"promo": "<p><i>Don't give your private key to to services you don't trust.</i><br/>Giving your private key to un-trusted services or people will result in loosing your money.</p><p><i>Check URL address in your browser</i><br />Whether you're accessing our site directly from browser or from email and social media link, always check our website address — <a target='_blank' rel='noopener noreferrer' href=\"https://chronowallet.chronobank.io\">chronowallet.chronobank.io</a></p><p><i>Be careful by sending your funds to other people.</i><br />Deal with people you trust, as you normally do with your bank accounts.</p>",
-			"detailsMargin": "24px 7% 24px 6%",
-			"fgMargin": "0 54% 0 -4%",
-			"mobileTopSpacerHeight": "75vw",
-			"bg": "/chronomint-presentation/img/slides/slide-05-bg.jpg",
-			"bgMobile": "/chronomint-presentation/img/slides/slide-05-bg-mobile.jpg",
-			"fg": "/chronomint-presentation/img/slides/slide-05-fg.svg"
-		},
-		{
-			"name": "slide-06",
-			"promo": "<p>Thank you for your time and we're excited to have you on board!</p>",
-			"detailsMargin": "24px 30% 24px 16%",
-			"fgMargin": "10% 14% 0 -4%",
-			"mobileTopSpacerHeight": "75vw",
-			"bg": "/chronomint-presentation/img/slides/slide-06-bg.jpg",
-			"bgMobile": "/chronomint-presentation/img/slides/slide-06-bg-mobile.jpg",
-			"fg": "/chronomint-presentation/img/slides/slide-06-fg.svg"
-		}
-	]
-};
+module.exports = {"name":"@chronobank/chronomint-presentation","version":"1.0.1","description":"ChronoMint Presentation","private":true,"moduleRoots":[""],"scripts":{"build":"webpack","build:prod":"webpack -p","delete":"node bin/cli.js delete","multiwatch":"concurrently \"npm run watch\"  \"npm run ssr:watch\" \"npm run start\"","new":"node bin/cli.js new","publish":"webpack && node bin/cli.js publish","publish:prod":"webpack -p && node bin/cli.js publish","publish:only":"node bin/cli.js publish","publish:all":"webpack && node bin/cli.js publishAll","publish:snippet":"webpack && node bin/cli.js publishSnippet","ssr":"babel app --out-dir ./dist/raw --no-babelrc --plugins=transform-class-properties,transform-object-rest-spread,inline-react-svg --presets=react,env","ssr:watch":"babel app --watch --out-dir ./dist/raw --no-babelrc --plugins=transform-class-properties,transform-object-rest-spread,inline-react-svg --presets=react,env","start":"node bin/server.js","test":"mocha internals/test/.setup-test.js app/**/*.test.js","test:single":"mocha internals/test/.setup-test.js","test:watch":"mocha -w internals/test/.setup-test.js app/**/*.test.js","watch":"webpack --watch","hs":"hs dist -a localhost -o"},"author":"Igor Pavlenko","license":"MIT","browserslist":["last 2 versions"],"devDependencies":{"autoprefixer":"^7.1.2","babel-cli":"^6.26.0","babel-core":"^6.25.0","babel-eslint":"^8.0.1","babel-loader":"^7.1.1","babel-plugin-inline-react-svg":"^0.5.2","babel-plugin-react-css-modules":"^3.3.3","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-react-jsx":"^6.8.0","babel-preset-env":"^1.6.0","babel-preset-react":"^6.23.0","babel-register":"^6.24.0","chai":"^4.1.1","concurrently":"^3.5.0","copy-webpack-plugin":"^4.0.0","css-loader":"^0.28.4","enzyme":"^3.0.0","enzyme-adapter-react-16":"^1.0.0","eslint":"^4.7.2","eslint-loader":"^1.9.0","eslint-plugin-chronobank":"chronobank/eslint-plugin-chronobank","eslint-plugin-chronobank-react":"chronobank/eslint-plugin-chronobank-react","eslint-plugin-react":"^7.4.0","expose-loader":"^0.7.3","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.5","fs-extra":"^4.0.2","http-server":"^0.11.1","ignore-loader":"^0.1.2","js-beautify":"^1.6.14","jsdom":"^11.2.0","mocha":"^4.0.1","node-sass":"^4.5.3","postcss-loader":"^2.0.6","postcss-scss":"^1.0.3","react-test-renderer":"^16.0.0","sass-loader":"^6.0.6","style-loader":"^0.19.0","webpack":"^3.5.4","webpack-bundle-analyzer":"^2.10.0","webpack-dev-server":"^2.7.1"},"dependencies":{"babel-polyfill":"^6.23.0","classnames":"^2.2.5","react":"^16.1.1","react-cookie":"^2.1.2","react-dom":"^16.1.1","swiper":"^4.1.5"}}
 
 /***/ }),
-/* 15 */
+/* 36 */
+/***/ (function(module, exports) {
+
+module.exports = {"slides":[{"name":"slide-01","promo":"<p>Start to control your money using <b>Chrono Wallet</b> removing intermediates e.g. banks, and making your funds and transfers under your control, fast and safe.</p>","detailsMargin":"24px 7% 24px 32%","fgMargin":"0 14% 0 -4%","mobileTopSpacerHeight":"10vw","bg":"/chronomint-presentation/img/slides/slide-01-bg.jpg","bgMobile":"/chronomint-presentation/img/slides/slide-01-bg-mobile.jpg","fg":"/chronomint-presentation/img/slides/slide-01-fg.svg"},{"name":"slide-02","promo":"<p><b>Chrono Wallet is a gate to the global block-chain network, controlled by all the participants including you.</b></p><p>Block-chain is an innovative, anonymous and the most safe technology of storing digital money and transactions. The network data is stored on each participants’ computers and syncing on every update. The transaction confirmation system makes block-chain network the most secure in the world up-to-date.</p>","detailsMargin":"24px 7% 24px 20%","fgMargin":"0 14% 0 -4%","mobileTopSpacerHeight":"75vw","bg":"/chronomint-presentation/img/slides/slide-02-bg.jpg","bgMobile":"/chronomint-presentation/img/slides/slide-02-bg-mobile.jpg","fg":"/chronomint-presentation/img/slides/slide-02-fg.svg"},{"name":"slide-03","promo":"<p><b>We do not store any login, funds and transactions data on our servers for your safety.</b></p><p>You may use the network being anonymous. All your transactions will be reflected as an address with received or sent funds.</p><p>Consider your address as your personal bank account. Double checking of an address you are sending to is a good idea!</p>","detailsMargin":"24px 7% 24px 14%","fgMargin":"0 14% 0 -4%","mobileTopSpacerHeight":"75vw","bg":"/chronomint-presentation/img/slides/slide-03-bg.jpg","bgMobile":"/chronomint-presentation/img/slides/slide-03-bg-mobile.jpg","fg":"/chronomint-presentation/img/slides/slide-03-fg.svg"},{"name":"slide-04","promo":"<p><b>Chrono Wallet will generate the following for you:</b></p><p><i>Private key</i> to access the network. The private key is a file secured by password on your device.</p><p><i>12 words password (Mnemonic Key),</i> which is just an another method of storing your private key. Copy this password on a paper and keep it in a safe place. Both file and mnemonic key can be used to restore your account if something will go wrong.</p><p><i>Addresses</i> to deposit and withdraw funds. You may give the receiving address to other network participant, so they can send you money. You will also use another address to send funds.</p>","detailsMargin":"24px 7% 24px 10%","fgMargin":"0 24% 0 0%","mobileTopSpacerHeight":"75vw","bg":"/chronomint-presentation/img/slides/slide-04-bg.jpg","bgMobile":"/chronomint-presentation/img/slides/slide-04-bg-mobile.jpg","fg":"/chronomint-presentation/img/slides/slide-04-fg.svg"},{"name":"slide-05","promo":"<p><i>Don't give your private key to to services you don't trust.</i><br/>Giving your private key to un-trusted services or people will result in loosing your money.</p><p><i>Check URL address in your browser</i><br />Whether you're accessing our site directly from browser or from email and social media link, always check our website address — <a target='_blank' rel='noopener noreferrer' href=\"https://chronowallet.chronobank.io\">chronowallet.chronobank.io</a></p><p><i>Be careful by sending your funds to other people.</i><br />Deal with people you trust, as you normally do with your bank accounts.</p>","detailsMargin":"24px 7% 24px 6%","fgMargin":"0 54% 0 -4%","mobileTopSpacerHeight":"75vw","bg":"/chronomint-presentation/img/slides/slide-05-bg.jpg","bgMobile":"/chronomint-presentation/img/slides/slide-05-bg-mobile.jpg","fg":"/chronomint-presentation/img/slides/slide-05-fg.svg"},{"name":"slide-06","promo":"<p>Thank you for your time and we're excited to have you on board!</p>","detailsMargin":"24px 30% 24px 16%","fgMargin":"10% 14% 0 -4%","mobileTopSpacerHeight":"75vw","bg":"/chronomint-presentation/img/slides/slide-06-bg.jpg","bgMobile":"/chronomint-presentation/img/slides/slide-06-bg-mobile.jpg","fg":"/chronomint-presentation/img/slides/slide-06-fg.svg"}]}
+
+/***/ }),
+/* 37 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"PresentationApp":"PresentationApp__PresentationApp___2SSdq","PresentationApp-closed":"PresentationApp__PresentationApp-closed___1F7uG","button":"PresentationApp__button___1Fa0W","logo":"PresentationApp__logo___UNfQL","logo-desktop":"PresentationApp__logo-desktop___3b7pB","logo-mobile":"PresentationApp__logo-mobile___3n0CN","background":"PresentationApp__background___1ULQz","background-desktop":"PresentationApp__background-desktop___GaDlq","background-mobile":"PresentationApp__background-mobile___1IFf9","cells":"PresentationApp__cells___2LH2K","cell":"PresentationApp__cell___yILof","cell-desktop":"PresentationApp__cell-desktop___cso4O","cell-mobile":"PresentationApp__cell-mobile___3bcpy","cell-1":"PresentationApp__cell-1___2OQDG","cell-2":"PresentationApp__cell-2___1jb-r","foreground":"PresentationApp__foreground___33lbg","foreground-desktop":"PresentationApp__foreground-desktop___1up1J","foreground-mobile":"PresentationApp__foreground-mobile___2eHva","details":"PresentationApp__details___1EbPS","message":"PresentationApp__message___3-JjC","buttons":"PresentationApp__buttons___1RIuj","button-next":"PresentationApp__button-next___2Th7q","button-prev":"PresentationApp__button-prev___3RPRp","details-desktop":"PresentationApp__details-desktop___1GKAu","details-mobile":"PresentationApp__details-mobile___lN-18"};
+module.exports = {"PresentationComponent":"PresentationComponent__PresentationComponent___jKZHo","PresentationComponent-closed":"PresentationComponent__PresentationComponent-closed___2jRFJ","button":"PresentationComponent__button___3tWiq","logo":"PresentationComponent__logo___2Y19K","logo-desktop":"PresentationComponent__logo-desktop___1CMmK","logo-mobile":"PresentationComponent__logo-mobile___1gdK1","background":"PresentationComponent__background___1pZnP","background-desktop":"PresentationComponent__background-desktop___ws_fD","background-mobile":"PresentationComponent__background-mobile___2hIEy","cells":"PresentationComponent__cells___15u6J","cell":"PresentationComponent__cell___1UGET","cell-desktop":"PresentationComponent__cell-desktop___ErafQ","cell-mobile":"PresentationComponent__cell-mobile___1EBs2","cell-1":"PresentationComponent__cell-1___1sIt0","cell-2":"PresentationComponent__cell-2___122_A","foreground":"PresentationComponent__foreground___1822E","foreground-desktop":"PresentationComponent__foreground-desktop___3UiFV","foreground-mobile":"PresentationComponent__foreground-mobile___1zx_5","details":"PresentationComponent__details___19aPA","message":"PresentationComponent__message___2_zxz","buttons":"PresentationComponent__buttons___1XNh3","button-next":"PresentationComponent__button-next___1m7-O","button-prev":"PresentationComponent__button-prev___2eyct","details-desktop":"PresentationComponent__details-desktop___3FmtC","details-mobile":"PresentationComponent__details-mobile___L6mD2"};
 
 /***/ })
 /******/ ]);

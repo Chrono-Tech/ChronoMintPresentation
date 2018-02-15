@@ -26,6 +26,16 @@ module.exports = [
         './index.js',
       ],
     },
+    resolve: {
+      extensions: ['.js', '.jsx', '.json', '.scss'],
+      modules: [
+        path.resolve(__dirname, 'app'),
+        path.resolve(__dirname, 'node_modules'),
+      ],
+      alias: {
+        'package.json': path.resolve(__dirname, 'package.json'),
+      },
+    },
     output: {
       path: path.join(outputPath, config.outputPathSubFolder, config.outputPathJsFolder),
       filename: '[name].js',
