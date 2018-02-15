@@ -52,8 +52,11 @@ class PresentationApp extends React.PureComponent {
         <header>
           <ul>
             <li>
-              <button styleName='logo' onClick={() => this.handleSignin()}>
+              <button styleName='logo logo-desktop' onClick={() => this.handleSignin()}>
                 <img src='/chronomint-presentation/img/logo-chronobank.svg' alt='ChronoBank Logo' />
+              </button>
+              <button styleName='logo logo-mobile' onClick={() => this.handleSignin()}>
+                <img src='/chronomint-presentation/img/logo-chronobank-mobile.svg' alt='ChronoBank Logo' />
               </button>
             </li>
           </ul>
@@ -68,18 +71,40 @@ class PresentationApp extends React.PureComponent {
             <div className='swiper-wrapper'>
               {componentData.slides.map((slide, index)  => (
                 <div className='swiper-slide' key={slide.name}>
-                  <img styleName='slide-bg' src={slide.bg} alt={`Slide ${index + 1}`} />
+                  <img styleName='background background-desktop' src={slide.bg} alt={`Slide ${index + 1}`} />
+                  <img styleName='background background-mobile' src={slide.bgMobile} alt={`Slide ${index + 1}`} />
                   <div styleName='cells'>
-                    <div styleName='cell cell-1' />
+                    <div styleName='cell cell-1 cell-desktop' />
+                    <div
+                      styleName='cell cell-1 cell-mobile'
+                      style={{
+                        height: slide.mobileTopSpacerHeight,
+                      }}
+                    />
                     <div styleName='cell cell-2'>
-                      <img styleName='slide-fg' style={{ margin: slide.fgMargin }} src={slide.fg} alt={`Slide ${index + 1}`} />
-                      <div styleName='details' style={{ margin: slide.detailsMargin }}>
+                      <img styleName='foreground foreground-desktop' style={{ margin: slide.fgMargin }} src={slide.fg} alt={`Slide ${index + 1}`} />
+                      <img styleName='foreground foreground-mobile' src={slide.fg} alt={`Slide ${index + 1}`} />
+                      <div styleName='details details-desktop' style={{ margin: slide.detailsMargin }}>
                         <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
-                        {index === componentData.slides.length - 1
-                          ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
-                          : <button styleName='button button-next' className='swiper-button-next'>Next</button>
-                        }
-
+                        <div styleName='buttons'>
+                          {index === 0
+                            ? null
+                            : <button styleName='button button-prev' className='swiper-button-prev'>Prev</button>
+                          }
+                          {index === componentData.slides.length - 1
+                            ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
+                            : <button styleName='button button-next' className='swiper-button-next'>Next</button>
+                          }
+                        </div>
+                      </div>
+                      <div styleName='details details-mobile'>
+                        <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
+                        <div styleName='buttons'>
+                          {index === componentData.slides.length - 1
+                            ? <button styleName='button' onClick={() => this.handleSignin()}>Sign In</button>
+                            : <button styleName='button button-next' className='swiper-button-next'>Next</button>
+                          }
+                        </div>
                       </div>
                     </div>
                   </div>

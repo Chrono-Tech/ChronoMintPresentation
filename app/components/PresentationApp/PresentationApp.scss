@@ -13,9 +13,19 @@
 @import "app/scss/partials/mixins";
 @import "app/scss/themes/fonts";
 
+:global {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+}
+
 .PresentationApp {
-  @include position(absolute);
-  background: linear-gradient(to bottom,#574EBF ,#353266 100%);
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #2C2A52; // linear-gradient(to bottom,#574EBF ,#353266 100%);
   z-index: 10;
   font-family: $proxima;
   transition: opacity 0.5s ease-out;
@@ -44,13 +54,18 @@
           @include button-rounded();
         }
         >button.logo {
-          display: block;
           background: transparent;
           border: none;
           cursor: pointer;
           outline: none;
           >img {
-            width: 192px;
+            height: 32px;
+          }
+          &.logo-desktop {
+            display: block;
+          }
+          &.logo-mobile {
+            display: none;
           }
         }
       }
@@ -58,9 +73,15 @@
   }
 
   >section {
+    display: flex;
+    flex-direction: column;
     // @include position(absolute, 70px, 0, 0, 0);
+    position: relative;
+    flex: 1 1 auto;
     margin-top: 70px;
     >:global(.swiper-container) {
+      flex: 1 1 auto;
+      // min-height: 100vh;
       @include swiper-container();
       >:global(.swiper-wrapper) {
         @include swiper-wrapper();
@@ -69,12 +90,19 @@
           // overflow: auto;
           align-items: flex-start;
           position: relative;
-          >img.slide-bg {
+          >img.background {
+            @include position(absolute, 0, 0, auto, 0);
             width: 100%;
-            height: auto;
+            &.background-desktop {
+              display: block;
+            }
+            &.background-mobile {
+              display: none;
+            }
           }
           >.cells {
-            @include position(absolute);
+            position: relative;
+            width: 100%;
             display: flex;
             align-items: stretch;
             text-align: left;
@@ -82,17 +110,28 @@
               flex: 1 1 50%;
               position: relative;
               margin: 6% 0%;
+              &.cell-desktop {
+                display: block;
+              }
+              &.cell-mobile {
+                display: none;
+              }
               &.cell-1 {
                 margin-left: 5%;
               }
               &.cell-2 {
                 margin-right: 5%;
-                >img.slide-fg {
-                  margin: 0 14% 0 -4%;
+                >img.foreground {
                   height: auto;
+                  margin-bottom: 24px;
+                  &.foreground-desktop {
+                    display: block;
+                  }
+                  &.foreground-mobile {
+                    display: none;
+                  }
                 }
                 >.details {
-                  margin: 32px 7% 32px 32%;
                   >.message {
                     color: #FFFFFF;
                     line-height: 1.4;
@@ -119,18 +158,37 @@
                       margin: 1em 0;
                     }
                   }
-                  >button.button {
-                    @include button-rounded();
-                    line-height: 48px;
-                    min-width: 160px;
-                    &.button-next {
-                      background: rgba(#E2A864,0.9);
-                      &:hover {
-                        background: rgba(#E2A864,1);
+                  >.buttons {
+                    position: relative;
+                    >button.button {
+                      @include button-rounded();
+                      line-height: 48px;
+                      min-width: 160px;
+                      margin: 0 12px 0 0;
+                      &.button-next {
+                        background: rgba(#E2A864,0.9);
+                        &:hover {
+                          background: rgba(#E2A864,1);
+                        }
+                      }
+                      &.button-prev {
+                        @include position(absolute, 0, 100%, auto, auto);
+                        background: rgba(#E2A864,0.0);
+                        color: #FFFFFF;
+                        font-weight: normal;
+                        &:hover {
+                          background: rgba(#FFFFFF, 0.15);
+                        }
+                      }
+                      &.button-signin {
                       }
                     }
-                    &.button-signin {
-                    }
+                  }
+                  &.details-desktop {
+                    display: block;
+                  }
+                  &.details-mobile {
+                    display: none;
                   }
                 }
               }
@@ -147,6 +205,84 @@
         text-align: right;
         >:global(.swiper-pagination-bullet) {
           @include swiper-pagination-bullet();
+        }
+      }
+    }
+  }
+
+  @include when-width-lte($screen-sm) {
+    >header {
+      >ul {
+        padding: 15px 15px;
+        >li {
+          button.logo {
+            &.logo-desktop {
+              display: none;
+            }
+            &.logo-mobile {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+    >section {
+      >:global(.swiper-container) {
+        >:global(.swiper-wrapper) {
+          >:global(.swiper-slide) {
+            >img.background {
+              &.background-desktop {
+                display: none;
+              }
+              &.background-mobile {
+                display: block;
+              }
+            }
+            >.cells {
+              flex-direction: column;
+              >.cell {
+                &.cell-desktop {
+                  display: none;
+                }
+                &.cell-mobile {
+                  display: block;
+                }
+                &.cell-1 {
+                  margin: 0;
+                  height: 75vw;
+                }
+                &.cell-2 {
+                  margin: 5%;
+                  >img.foreground {
+                    &.foreground-desktop {
+                      display: none;
+                    }
+                    &.foreground-mobile {
+                      display: block;
+                    }
+                  }
+                  >.details {
+                    margin-bottom: 48px;
+                    >.message {
+                      font-size: 16px;
+                    }
+                    >.buttons {
+                      text-align: center;
+                    }
+                    &.details-desktop {
+                      display: none;
+                    }
+                    &.details-mobile {
+                      display: block;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        >:global(.swiper-pagination) {
+          text-align: center;
         }
       }
     }
