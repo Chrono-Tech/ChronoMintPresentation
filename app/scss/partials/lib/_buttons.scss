@@ -1,7 +1,7 @@
 @import "../variables";
 
 @mixin button-rounded () {
-  display: block;
+  display: inline-block;
   border: none;
   cursor: pointer;
   border-radius: 999px;

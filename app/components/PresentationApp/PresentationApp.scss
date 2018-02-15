@@ -25,7 +25,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(to bottom,#574EBF ,#353266 100%);
+  background: #2C2A52; // linear-gradient(to bottom,#574EBF ,#353266 100%);
   z-index: 10;
   font-family: $proxima;
   transition: opacity 0.5s ease-out;
@@ -90,15 +90,15 @@
           // overflow: auto;
           align-items: flex-start;
           position: relative;
-          >img.slide-bg {
+          >img.background {
             @include position(absolute, 0, 0, auto, 0);
             width: 100%;
-            display: block;
-          }
-          >img.slide-bg-mobile {
-            @include position(absolute, 0, 0, auto, 0);
-            width: 100%;
-            display: none;
+            &.background-desktop {
+              display: block;
+            }
+            &.background-mobile {
+              display: none;
+            }
           }
           >.cells {
             position: relative;
@@ -110,17 +110,28 @@
               flex: 1 1 50%;
               position: relative;
               margin: 6% 0%;
+              &.cell-desktop {
+                display: block;
+              }
+              &.cell-mobile {
+                display: none;
+              }
               &.cell-1 {
                 margin-left: 5%;
               }
               &.cell-2 {
                 margin-right: 5%;
-                >img.slide-fg {
-                  margin: 0 14% 0 -4%;
+                >img.foreground {
                   height: auto;
+                  margin-bottom: 24px;
+                  &.foreground-desktop {
+                    display: block;
+                  }
+                  &.foreground-mobile {
+                    display: none;
+                  }
                 }
                 >.details {
-                  margin: 32px 7% 32px 32%;
                   >.message {
                     color: #FFFFFF;
                     line-height: 1.4;
@@ -159,6 +170,12 @@
                     }
                     &.button-signin {
                     }
+                  }
+                  &.details-desktop {
+                    display: block;
+                  }
+                  &.details-mobile {
+                    display: none;
                   }
                 }
               }
@@ -200,30 +217,58 @@
       >:global(.swiper-container) {
         >:global(.swiper-wrapper) {
           >:global(.swiper-slide) {
-            >img.slide-bg {
-              display: none;
-            }
-            >img.slide-bg-mobile {
-              display: block;
+            >img.background {
+              &.background-desktop {
+                display: none;
+              }
+              &.background-mobile {
+                display: block;
+              }
             }
             >.cells {
               flex-direction: column;
               >.cell {
+                &.cell-desktop {
+                  display: none;
+                }
+                &.cell-mobile {
+                  display: block;
+                }
                 &.cell-1 {
                   margin: 0;
                   height: 75vw;
                 }
                 &.cell-2 {
                   margin: 5%;
+                  >img.foreground {
+                    &.foreground-desktop {
+                      display: none;
+                    }
+                    &.foreground-mobile {
+                      display: block;
+                    }
+                  }
                   >.details {
+                    text-align: center;
+                    margin-bottom: 48px;
                     >.message {
+                      text-align: left;
                       font-size: 16px;
+                    }
+                    &.details-desktop {
+                      display: none;
+                    }
+                    &.details-mobile {
+                      display: block;
                     }
                   }
                 }
               }
             }
           }
+        }
+        >:global(.swiper-pagination) {
+          text-align: center;
         }
       }
     }

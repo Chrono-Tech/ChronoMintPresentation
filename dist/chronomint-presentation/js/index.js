@@ -268,16 +268,26 @@ var _styleModuleImportMap = {
     'PresentationApp-closed': 'PresentationApp__PresentationApp-closed___1F7uG',
     'button': 'PresentationApp__button___1Fa0W',
     'logo': 'PresentationApp__logo___UNfQL',
-    'slide-bg': 'PresentationApp__slide-bg___ppcyi',
+    'logo-desktop': 'PresentationApp__logo-desktop___3b7pB',
+    'logo-mobile': 'PresentationApp__logo-mobile___3n0CN',
+    'background': 'PresentationApp__background___1ULQz',
+    'background-desktop': 'PresentationApp__background-desktop___GaDlq',
+    'background-mobile': 'PresentationApp__background-mobile___1IFf9',
     'cells': 'PresentationApp__cells___2LH2K',
     'cell': 'PresentationApp__cell___yILof',
+    'cell-desktop': 'PresentationApp__cell-desktop___cso4O',
+    'cell-mobile': 'PresentationApp__cell-mobile___3bcpy',
     'cell-1': 'PresentationApp__cell-1___2OQDG',
     'cell-2': 'PresentationApp__cell-2___1jb-r',
-    'slide-fg': 'PresentationApp__slide-fg___edFrF',
+    'foreground': 'PresentationApp__foreground___33lbg',
+    'foreground-desktop': 'PresentationApp__foreground-desktop___1up1J',
+    'foreground-mobile': 'PresentationApp__foreground-mobile___2eHva',
     'details': 'PresentationApp__details___1EbPS',
     'message': 'PresentationApp__message___3-JjC',
     'button-next': 'PresentationApp__button-next___2Th7q',
-    'button-signin': 'PresentationApp__button-signin___2-Gys'
+    'button-signin': 'PresentationApp__button-signin___2-Gys',
+    'details-desktop': 'PresentationApp__details-desktop___1GKAu',
+    'details-mobile': 'PresentationApp__details-mobile___lN-18'
   }
 };
 
@@ -362,10 +372,17 @@ var PresentationApp = function (_React$PureComponent) {
               null,
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'button',
-                { className: 'PresentationApp__logo___UNfQL', onClick: function onClick() {
+                { className: 'PresentationApp__logo___UNfQL PresentationApp__logo-desktop___3b7pB', onClick: function onClick() {
                     return _this3.handleSignin();
                   } },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/chronomint-presentation/img/logo-chronobank.svg', alt: 'ChronoBank Logo' })
+              ),
+              __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'button',
+                { className: 'PresentationApp__logo___UNfQL PresentationApp__logo-mobile___3n0CN', onClick: function onClick() {
+                    return _this3.handleSignin();
+                  } },
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/chronomint-presentation/img/logo-chronobank-mobile.svg', alt: 'ChronoBank Logo' })
               )
             )
           ),
@@ -400,18 +417,42 @@ var PresentationApp = function (_React$PureComponent) {
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                   'div',
                   { className: 'swiper-slide', key: slide.name },
-                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__slide-bg___ppcyi', src: slide.bg, alt: 'Slide ' + (index + 1) }),
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__background___1ULQz PresentationApp__background-desktop___GaDlq', src: slide.bg, alt: 'Slide ' + (index + 1) }),
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__background___1ULQz PresentationApp__background-mobile___1IFf9', src: slide.bgMobile, alt: 'Slide ' + (index + 1) }),
                   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'PresentationApp__cells___2LH2K' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__cell___yILof PresentationApp__cell-1___2OQDG' }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__cell___yILof PresentationApp__cell-1___2OQDG PresentationApp__cell-desktop___cso4O' }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', {
+                      className: 'PresentationApp__cell___yILof PresentationApp__cell-1___2OQDG PresentationApp__cell-mobile___3bcpy',
+                      style: {
+                        height: slide.mobileTopSpacerHeight
+                      }
+                    }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'div',
                       { className: 'PresentationApp__cell___yILof PresentationApp__cell-2___1jb-r' },
-                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__slide-fg___edFrF', style: { margin: slide.fgMargin }, src: slide.fg, alt: 'Slide ' + (index + 1) }),
+                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__foreground___33lbg PresentationApp__foreground-desktop___1up1J', style: { margin: slide.fgMargin }, src: slide.fg, alt: 'Slide ' + (index + 1) }),
+                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'PresentationApp__foreground___33lbg PresentationApp__foreground-mobile___2eHva', src: slide.fg, alt: 'Slide ' + (index + 1) }),
                       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
-                        { className: 'PresentationApp__details___1EbPS', style: { margin: slide.detailsMargin } },
+                        { className: 'PresentationApp__details___1EbPS PresentationApp__details-desktop___1GKAu', style: { margin: slide.detailsMargin } },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__message___3-JjC', dangerouslySetInnerHTML: { __html: slide.promo } }),
+                        index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                          'button',
+                          { className: 'PresentationApp__button___1Fa0W', onClick: function onClick() {
+                              return _this3.handleSignin();
+                            } },
+                          'Sign In'
+                        ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                          'button',
+                          { className: 'swiper-button-next PresentationApp__button___1Fa0W PresentationApp__button-next___2Th7q' },
+                          'Next'
+                        )
+                      ),
+                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'div',
+                        { className: 'PresentationApp__details___1EbPS PresentationApp__details-mobile___lN-18' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'PresentationApp__message___3-JjC', dangerouslySetInnerHTML: { __html: slide.promo } }),
                         index === __WEBPACK_IMPORTED_MODULE_4__PresentationApp_json___default.a.slides.length - 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                           'button',
@@ -8529,6 +8570,7 @@ module.exports = {
 			"promo": "<p>Start to control your money using <b>Chrono Wallet</b> removing intermediates e.g. banks, and making your funds and transfers under your control, fast and safe.</p>",
 			"detailsMargin": "24px 7% 24px 32%",
 			"fgMargin": "0 14% 0 -4%",
+			"mobileTopSpacerHeight": "10vw",
 			"bg": "/chronomint-presentation/img/slides/slide-01-bg.jpg",
 			"bgMobile": "/chronomint-presentation/img/slides/slide-01-bg-mobile.jpg",
 			"fg": "/chronomint-presentation/img/slides/slide-01-fg.svg"
@@ -8538,6 +8580,7 @@ module.exports = {
 			"promo": "<p><b>Chrono Wallet is a gate to the global block-chain network, controlled by all the participants including you.</b></p><p>Block-chain is an innovative, anonymous and the most safe technology of storing digital money and transactions. The network data is stored on each participants’ computers and syncing on every update. The transaction confirmation system makes block-chain network the most secure in the world up-to-date.</p>",
 			"detailsMargin": "24px 7% 24px 20%",
 			"fgMargin": "0 14% 0 -4%",
+			"mobileTopSpacerHeight": "75vw",
 			"bg": "/chronomint-presentation/img/slides/slide-02-bg.jpg",
 			"bgMobile": "/chronomint-presentation/img/slides/slide-02-bg-mobile.jpg",
 			"fg": "/chronomint-presentation/img/slides/slide-02-fg.svg"
@@ -8547,6 +8590,7 @@ module.exports = {
 			"promo": "<p><b>We do not store any login, funds and transactions data on our servers for your safety.</b></p><p>You may use the network being anonymous. All your transactions will be reflected as an address with received or sent funds.</p><p>Consider your address as your personal bank account. Double checking of an address you are sending to is a good idea!</p>",
 			"detailsMargin": "24px 7% 24px 14%",
 			"fgMargin": "0 14% 0 -4%",
+			"mobileTopSpacerHeight": "75vw",
 			"bg": "/chronomint-presentation/img/slides/slide-03-bg.jpg",
 			"bgMobile": "/chronomint-presentation/img/slides/slide-03-bg-mobile.jpg",
 			"fg": "/chronomint-presentation/img/slides/slide-03-fg.svg"
@@ -8556,6 +8600,7 @@ module.exports = {
 			"promo": "<p><b>Chrono Wallet will generate the following for you:</b></p><p><i>Private key</i> to access the network. The private key is a file secured by password on your device.</p><p><i>12 words password (Mnemonic Key),</i> which is just an another method of storing your private key. Copy this password on a paper and keep it in a safe place. Both file and mnemonic key can be used to restore your account if something will go wrong.</p><p><i>Addresses</i> to deposit and withdraw funds. You may give the receiving address to other network participant, so they can send you money. You will also use another address to send funds.</p>",
 			"detailsMargin": "24px 7% 24px 10%",
 			"fgMargin": "0 24% 0 0%",
+			"mobileTopSpacerHeight": "75vw",
 			"bg": "/chronomint-presentation/img/slides/slide-04-bg.jpg",
 			"bgMobile": "/chronomint-presentation/img/slides/slide-04-bg-mobile.jpg",
 			"fg": "/chronomint-presentation/img/slides/slide-04-fg.svg"
@@ -8565,6 +8610,7 @@ module.exports = {
 			"promo": "<p><i>Don't give your private key to to services you don't trust.</i><br/>Giving your private key to un-trusted services or people will result in loosing your money.</p><p><i>Check URL address in your browser</i><br />Whether you're accessing our site directly from browser or from email and social media link, always check our website address — <a target='_blank' rel='noopener noreferrer' href=\"https://chronowallet.chronobank.io\">chronowallet.chronobank.io</a></p><p><i>Be careful by sending your funds to other people.</i><br />Deal with people you trust, as you normally do with your bank accounts.</p>",
 			"detailsMargin": "24px 7% 24px 6%",
 			"fgMargin": "0 54% 0 -4%",
+			"mobileTopSpacerHeight": "75vw",
 			"bg": "/chronomint-presentation/img/slides/slide-05-bg.jpg",
 			"bgMobile": "/chronomint-presentation/img/slides/slide-05-bg-mobile.jpg",
 			"fg": "/chronomint-presentation/img/slides/slide-05-fg.svg"
@@ -8574,6 +8620,7 @@ module.exports = {
 			"promo": "<p>Thank you for your time and we're excited to have you on board!</p>",
 			"detailsMargin": "24px 30% 24px 16%",
 			"fgMargin": "10% 14% 0 -4%",
+			"mobileTopSpacerHeight": "75vw",
 			"bg": "/chronomint-presentation/img/slides/slide-06-bg.jpg",
 			"bgMobile": "/chronomint-presentation/img/slides/slide-06-bg-mobile.jpg",
 			"fg": "/chronomint-presentation/img/slides/slide-06-fg.svg"
@@ -8586,7 +8633,7 @@ module.exports = {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"PresentationApp":"PresentationApp__PresentationApp___2SSdq","PresentationApp-closed":"PresentationApp__PresentationApp-closed___1F7uG","button":"PresentationApp__button___1Fa0W","logo":"PresentationApp__logo___UNfQL","slide-bg":"PresentationApp__slide-bg___ppcyi","cells":"PresentationApp__cells___2LH2K","cell":"PresentationApp__cell___yILof","cell-1":"PresentationApp__cell-1___2OQDG","cell-2":"PresentationApp__cell-2___1jb-r","slide-fg":"PresentationApp__slide-fg___edFrF","details":"PresentationApp__details___1EbPS","message":"PresentationApp__message___3-JjC","button-next":"PresentationApp__button-next___2Th7q"};
+module.exports = {"PresentationApp":"PresentationApp__PresentationApp___2SSdq","PresentationApp-closed":"PresentationApp__PresentationApp-closed___1F7uG","button":"PresentationApp__button___1Fa0W","logo":"PresentationApp__logo___UNfQL","logo-desktop":"PresentationApp__logo-desktop___3b7pB","logo-mobile":"PresentationApp__logo-mobile___3n0CN","background":"PresentationApp__background___1ULQz","background-desktop":"PresentationApp__background-desktop___GaDlq","background-mobile":"PresentationApp__background-mobile___1IFf9","cells":"PresentationApp__cells___2LH2K","cell":"PresentationApp__cell___yILof","cell-desktop":"PresentationApp__cell-desktop___cso4O","cell-mobile":"PresentationApp__cell-mobile___3bcpy","cell-1":"PresentationApp__cell-1___2OQDG","cell-2":"PresentationApp__cell-2___1jb-r","foreground":"PresentationApp__foreground___33lbg","foreground-desktop":"PresentationApp__foreground-desktop___1up1J","foreground-mobile":"PresentationApp__foreground-mobile___2eHva","details":"PresentationApp__details___1EbPS","message":"PresentationApp__message___3-JjC","button-next":"PresentationApp__button-next___2Th7q","details-desktop":"PresentationApp__details-desktop___1GKAu","details-mobile":"PresentationApp__details-mobile___lN-18"};
 
 /***/ })
 /******/ ]);
