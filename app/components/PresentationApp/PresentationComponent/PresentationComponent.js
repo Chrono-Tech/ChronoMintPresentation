@@ -33,6 +33,8 @@ class PresentationComponent extends React.PureComponent {
       expires.setFullYear(expires.getFullYear() + 1)
       // eslint-disable-next-line
       cookies.set(COOKIE_NAME, packageJson.version, { path: '/', expires })
+    } else {
+      this.handleSignin()
     }
   }
 
