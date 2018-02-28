@@ -123,7 +123,9 @@
                 margin-right: 5%;
                 >img.foreground {
                   height: auto;
-                  margin-bottom: 24px;
+                  margin-bottom: 36px;
+                  width: 100%;
+                  min-height: auto;
                   &.foreground-desktop {
                     display: block;
                   }

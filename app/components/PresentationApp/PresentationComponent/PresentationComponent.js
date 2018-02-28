@@ -101,9 +101,23 @@ class PresentationComponent extends React.PureComponent {
                       }}
                     />
                     <div styleName='cell cell-2'>
-                      <img styleName='foreground foreground-desktop' style={{ margin: slide.fgMargin }} src={slide.fg} alt={`Slide ${index + 1}`} />
+                      <img
+                        styleName='foreground foreground-desktop'
+                        src={slide.fg}
+                        alt={`Slide ${index + 1}`}
+                        style={{
+                          width: slide.fgWidth,
+                          transform: slide.fgTransform,
+                        }}
+                      />
                       <img styleName='foreground foreground-mobile' src={slide.fg} alt={`Slide ${index + 1}`} />
-                      <div styleName='details details-desktop' style={{ margin: slide.detailsMargin }}>
+                      <div
+                        styleName='details details-desktop'
+                        style={{
+                          width: slide.detailsWidth,
+                          transform: slide.detailsTransform,
+                        }}
+                      >
                         <div styleName='message' dangerouslySetInnerHTML={{ __html: slide.promo }} />
                         <div styleName='buttons'>
                           {index === 0
